@@ -29,6 +29,7 @@ public class Main_Page extends AppCompatActivity {
     private Button newcontactpopup_cancel, getNewcontactpopup_save;
     private ListView accountList;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
