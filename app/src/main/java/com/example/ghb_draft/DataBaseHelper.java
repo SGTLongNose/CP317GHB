@@ -173,7 +173,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
             // get data from the database
 
-            String queryString = "SELECT * FROM " + CUSTOMER_TABLE;
+            String queryString = "SELECT * FROM " + CUSTOMER_TABLE + "WHERE";
 
             SQLiteDatabase db = this.getReadableDatabase();
 
@@ -199,5 +199,29 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             return returnList;
         }
 
+    public UserModel isValidEmailAndPassword(String email, String password) {
+        UserModel user = new UserModel();
+
+        // get data from the database
+
+        String queryString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + "=" + email + " AND " + USER_PASSWORD + "=" + password;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            // loop through the cursor (result set) and create new customer objects. Put them into the return list.
+            do {
+                user.setFullName(cursor.getString(0));
+                user.setUserPhone(cursor.getString(1));
+                user.setUserEmail(cursor.getString(2));
+            } while (cursor.moveToNext());
+        }
+
+        // close both the cursor and the db when done
+        cursor.close();
+        db.close();
+        return user;
+    }
 
 }

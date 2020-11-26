@@ -13,7 +13,10 @@ public class UserModel {
     }
 
     public UserModel() {
-
+        this.fullName = "";
+        this.userEmail = "";
+        this.userPassword = "";
+        this.userPhone = "";
     }
 
     // toString
@@ -63,4 +66,6 @@ public class UserModel {
     public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
     }
+
+    public Boolean validUser() {return !this.fullName.isEmpty() || !this.userEmail.isEmpty() || !this.userPhone.isEmpty() || this.userPassword.isEmpty() ;}
 }
