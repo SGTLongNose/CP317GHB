@@ -73,6 +73,7 @@ public class Main_Page extends AppCompatActivity {
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 openSettings();
             }
         });

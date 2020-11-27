@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Settings extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;
     private ImageButton btn_home;
@@ -22,17 +26,26 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-       // dataBaseHelper.grabInfo();
+        dataBaseHelper = new DataBaseHelper(Settings.this);
 
         btn_save = (Button) findViewById(R.id.saveButton);
         firstName = (EditText) findViewById(R.id.settings_firstname);
-        lastName = (EditText) findViewById(R.id.settings_lastname);
         mobile = (EditText) findViewById(R.id.settings_mobile);
         email = (EditText) findViewById(R.id.settings_email);
-        accountNumber = (EditText) findViewById(R.id.settings_accountNumber);
         accountPassword = (EditText) findViewById(R.id.settings_password);
 
-        firstName.setHint("");
+        ArrayList<String> x = dataBaseHelper.grabInfo("razor234508@gmail.com");
+
+        String fName = x.get(0);
+        String phone = x.get(1);
+        String mail = x.get(2);
+        String pw = x.get(3);
+
+        firstName.setHint("Full Name: " + fName);
+        mobile.setHint("Phone Number: " + phone);
+        email.setHint("Email Address: " + mail);
+        accountPassword.setHint("Password: " + pw);
+
 
         btn_home = (ImageButton) findViewById(R.id.btn_home);
         btn_home.setOnClickListener(new View.OnClickListener() {
@@ -47,10 +60,8 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 firstName.setText("");
-                lastName.setText("");
                 mobile.setText("");
                 email.setText("");
-                accountNumber.setText("");
                 accountPassword.setText("");
             }
         });

@@ -24,12 +24,8 @@ public class UserModel {
 
     @Override
     public String toString() {
-        return "UserModel{" +
-                "fullName='" + fullName + '\'' +
-                ", userEmail='" + userEmail + '\'' +
-                ", userPassword='" + userPassword + '\'' +
-                ", userPhone='" + userPhone + '\'' +
-                '}';
+        return fullName + " " + userEmail +
+                " " + userPassword + " " + userPhone;
     }
 
     // getters and setters

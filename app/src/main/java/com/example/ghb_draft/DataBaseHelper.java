@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteQueryBuilder;
-import android.nfc.Tag;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -27,6 +25,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         public static final String USER_PASSWORD = "USER_PASSWORD";
         public static final String COL_WORD = "WORD";
         public static final String COL_DEFINITION = "DEFINITION";
+
+        public static String ACTIVE_USER = "ACTIVE_USER";
+
         public DataBaseHelper(@Nullable Context context) {
 
             super(context, "customer.db", null, 1);
@@ -213,11 +214,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToNext()) {
             // loop through the cursor (result set) and create new customer objects. Put them into the return list.
             String pw = cursor.getString(3);
+            Log.d("idk", pw);
             if (pw.equals(password)) {
                 hasObject = true;
             }
 
         }
+        ACTIVE_USER = email;
         // close both the cursor and the db when done
         cursor.close();
         db.close();
@@ -225,20 +228,37 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-//    public UserModel grabInfo(String email){
-//            UserModel user = new UserModel();
-//            int x = 2;
-//
-//            String userString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
-//
-//            SQLiteDatabase db = this.getReadableDatabase();
-//
-//            Cursor cursor = db.rawQuery(userString, new String[] {user.getFullName(), user.getUserPhone(), user.getUserEmail(), user.getUserPassword()});
-//
-//
-//
-//            return x;
-//    }
+    public ArrayList<String> grabInfo(String email) {
+        Log.d("3", "Do you get here");
+
+        String userString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
+
+        ArrayList<String> list = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(userString, new String[]{email});
+
+        if (cursor.moveToFirst()) {
+            // loop through the cursor (result set) and create new customer objects. Put them into the return list.
+
+            String pw = cursor.getString(3);
+            String name = cursor.getString(0);
+            String phone = cursor.getString(1);
+
+            list.add(name);
+            list.add(phone);
+            list.add(email);
+            list.add(pw);
+        }
+        else {
+            // failure. do not add anything to the list
+        }
+        cursor.close();
+        db.close();
+        return list;
+
+    }
 
 
 }
