@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dataBaseHelper = new DataBaseHelper(MainActivity.this);
+
         Name = (EditText) findViewById(R.id.et_Name);
         Password = (EditText) findViewById(R.id.et_Password);
         Attempts = (TextView) findViewById(R.id.tv_attmepts);
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     Log.d("Test","------------------------------------------------------------");
+                    boolean x = dataBaseHelper.isValidEmailAndPassword(Name.getText().toString(), Password.getText().toString());
+                    Log.d("Test","------------------------------------------------------------");
                     Log.d("Test1",Name.getText().toString() + "Add ON");
                     Log.d("Test2",Password.getText().toString() + "Add ON");
 //                    if (dataBaseHelper.isEmail(email) == true){
@@ -61,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 //                    } else {
 //                        Toast.makeText(MainActivity.this, "Email couldn't be found in the database", Toast.LENGTH_SHORT).show();
 //                    }
-                    if(!dataBaseHelper.isValidEmailAndPassword(Name.getText().toString(), Password.getText().toString()).validUser()){
+                    if(!x){
                         Toast.makeText(MainActivity.this, "The combination of Email and Password is not registered in the User DB", Toast.LENGTH_SHORT).show();
                         counter--;
                         Attempts.setText("Number of Attempts Remaining: " + String.valueOf(counter));
@@ -71,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
                 } catch (Exception e) {
                     Toast.makeText(MainActivity.this, "Error with registration", Toast.LENGTH_SHORT).show();
+                    Log.d("1", e.getMessage());
                 }
 
             }

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 public class Settings extends AppCompatActivity {
+    DataBaseHelper dataBaseHelper;
     private ImageButton btn_home;
     private Button btn_clear, btn_save;
     private EditText firstName, lastName, mobile, email, accountNumber, accountPassword;
@@ -21,6 +22,8 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+       // dataBaseHelper.grabInfo();
+
         btn_save = (Button) findViewById(R.id.saveButton);
         firstName = (EditText) findViewById(R.id.settings_firstname);
         lastName = (EditText) findViewById(R.id.settings_lastname);
@@ -28,6 +31,8 @@ public class Settings extends AppCompatActivity {
         email = (EditText) findViewById(R.id.settings_email);
         accountNumber = (EditText) findViewById(R.id.settings_accountNumber);
         accountPassword = (EditText) findViewById(R.id.settings_password);
+
+        firstName.setHint("");
 
         btn_home = (ImageButton) findViewById(R.id.btn_home);
         btn_home.setOnClickListener(new View.OnClickListener() {

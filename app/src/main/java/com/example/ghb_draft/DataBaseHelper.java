@@ -173,7 +173,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
             // get data from the database
 
-            String queryString = "SELECT * FROM " + CUSTOMER_TABLE + "WHERE";
+            String queryString = "SELECT * FROM " + CUSTOMER_TABLE;
 
             SQLiteDatabase db = this.getReadableDatabase();
 
@@ -199,29 +199,46 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             return returnList;
         }
 
-    public UserModel isValidEmailAndPassword(String email, String password) {
+    public boolean isValidEmailAndPassword(String email, String password) {
         UserModel user = new UserModel();
 
         // get data from the database
-
-        String queryString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + "=" + email + " AND " + USER_PASSWORD + "=" + password;
+        String queryString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery(queryString, null);
-        if (cursor.moveToFirst()) {
-            // loop through the cursor (result set) and create new customer objects. Put them into the return list.
-            do {
-                user.setFullName(cursor.getString(0));
-                user.setUserPhone(cursor.getString(1));
-                user.setUserEmail(cursor.getString(2));
-            } while (cursor.moveToNext());
-        }
+        Cursor cursor = db.rawQuery(queryString, new String[] {email});
 
+        boolean hasObject = false;
+        if (cursor.moveToNext()) {
+            // loop through the cursor (result set) and create new customer objects. Put them into the return list.
+            String pw = cursor.getString(3);
+            if (pw.equals(password)) {
+                hasObject = true;
+            }
+
+        }
         // close both the cursor and the db when done
         cursor.close();
         db.close();
-        return user;
+        return hasObject;
     }
+
+
+//    public UserModel grabInfo(String email){
+//            UserModel user = new UserModel();
+//            int x = 2;
+//
+//            String userString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
+//
+//            SQLiteDatabase db = this.getReadableDatabase();
+//
+//            Cursor cursor = db.rawQuery(userString, new String[] {user.getFullName(), user.getUserPhone(), user.getUserEmail(), user.getUserPassword()});
+//
+//
+//
+//            return x;
+//    }
+
 
 }
