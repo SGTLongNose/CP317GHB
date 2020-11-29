@@ -11,12 +11,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.net.Inet4Address;
 
 public class MainActivity extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;
     private EditText Name;
-    private EditText Password;
+    private EditText Password, email;
     private TextView Attempts;
     private Button Login;
     private Button Register;
@@ -34,10 +36,13 @@ public class MainActivity extends AppCompatActivity {
         Login = (Button) findViewById(R.id.btn_Login);
         Register = (Button) findViewById(R.id.btn_Register);
 
+
+
         Attempts.setText("Number of Attempts Remaining: " + String.valueOf(counter));
 
-        String email = Name.getText().toString();
-        String password = Password.getText().toString();
+//        final String[] email = {Name.getText().toString()};
+//        String password = Password.getText().toString();
+
 
 //        Login.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -49,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 try {
                     Log.d("Test", "------------------------------------------------------------");
                     boolean x = dataBaseHelper.isValidEmailAndPassword(Name.getText().toString(), Password.getText().toString());
@@ -61,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                         counter--;
                         Attempts.setText("Number of Attempts Remaining: " + String.valueOf(counter));
                     } else {
-                        Saver save = new Saver(Name.getText().toString());
                         openMainPage();
                     }
 

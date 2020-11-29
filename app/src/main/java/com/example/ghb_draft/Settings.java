@@ -18,7 +18,7 @@ public class Settings extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;
     private ImageButton btn_home;
     private Button btn_clear, btn_save;
-    private EditText firstName, lastName, mobile, email, accountNumber, accountPassword;
+    private EditText firstName, mobile, email, accountPassword, test;
 
 
     @Override
@@ -34,7 +34,7 @@ public class Settings extends AppCompatActivity {
         email = (EditText) findViewById(R.id.settings_email);
         accountPassword = (EditText) findViewById(R.id.settings_password);
 
-        ArrayList<String> x = dataBaseHelper.grabInfo("razor234508@gmail.com");
+        ArrayList<String> x = dataBaseHelper.grabInfo();
 
         String fName = x.get(0);
         String phone = x.get(1);

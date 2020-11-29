@@ -228,16 +228,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<String> grabInfo(String email) {
-        Log.d("3", "Do you get here");
+    public ArrayList<String> grabInfo() {
 
         String userString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
+
+        Log.d("9", ACTIVE_USER);
 
         ArrayList<String> list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery(userString, new String[]{email});
+        Cursor cursor = db.rawQuery(userString, new String[]{ACTIVE_USER});
 
         if (cursor.moveToFirst()) {
             // loop through the cursor (result set) and create new customer objects. Put them into the return list.
@@ -248,7 +249,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
             list.add(name);
             list.add(phone);
-            list.add(email);
+            list.add(ACTIVE_USER);
             list.add(pw);
         }
         else {
