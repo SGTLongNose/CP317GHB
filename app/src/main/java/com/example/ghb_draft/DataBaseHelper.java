@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -260,6 +261,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return list;
 
     }
+
+    public boolean updateSettings(String name, String phone, String email, String password) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(USER_FULL_NAME, name);
+        contentValues.put(USER_PHONE_NUMBER, phone);
+        contentValues.put(USER_EMAIL, email);
+        contentValues.put(USER_PASSWORD, password);
+
+        db.update(USER_TABLE, contentValues, "USER_EMAIL = ?", new String[] {email});
+
+        return true;
+
+    }
+
+
 
 
 }

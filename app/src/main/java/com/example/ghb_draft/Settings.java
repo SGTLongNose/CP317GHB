@@ -3,12 +3,14 @@ package com.example.ghb_draft;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -63,6 +65,21 @@ public class Settings extends AppCompatActivity {
                 mobile.setText("");
                 email.setText("");
                 accountPassword.setText("");
+            }
+        });
+
+        btn_save = (Button) findViewById(R.id.saveButton);
+        btn_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (firstName.getText().toString().isEmpty() || mobile.getText().toString().isEmpty() || email.getText().toString().isEmpty() || accountPassword.getText().toString().isEmpty()) {
+                    Toast.makeText(Settings.this, "Error changing info. Please fill in all sections.", Toast.LENGTH_SHORT).show();
+                } else {
+                    dataBaseHelper.updateSettings(firstName.getText().toString(), mobile.getText().toString(), email.getText().toString(), accountPassword.getText().toString());
+                    finish();
+                    startActivity(getIntent());
+                }
             }
         });
 

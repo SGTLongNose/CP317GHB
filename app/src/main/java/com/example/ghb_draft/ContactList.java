@@ -66,18 +66,18 @@ public class ContactList extends AppCompatActivity {
 
                 CustomerModel customerModel;
                 try {
-                    customerModel = new CustomerModel(-1, et_name.getText().toString(), et_email.getText().toString());
-                    Toast.makeText(ContactList.this, customerModel.toString(), Toast.LENGTH_SHORT).show();
+                    if (et_email.getText().toString().isEmpty() || et_name.getText().toString().isEmpty()) {
+                        Toast.makeText(ContactList.this, "Error creating customer", Toast.LENGTH_SHORT).show();
+                    } else {
+                        customerModel = new CustomerModel(-1, et_name.getText().toString(), et_email.getText().toString());
+                    }
                 }
                 catch (Exception e){
                     Toast.makeText(ContactList.this, "Error creating customer", Toast.LENGTH_SHORT).show();
-                    customerModel = new CustomerModel(-1, "error", "error");
                 }
 
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(ContactList.this);
 
-                boolean success = dataBaseHelper.addOne(customerModel);
-                Toast.makeText(ContactList.this, "Success= " + success, Toast.LENGTH_SHORT).show();
                 ShowCustomersOnListView(dataBaseHelper);
 
             }
