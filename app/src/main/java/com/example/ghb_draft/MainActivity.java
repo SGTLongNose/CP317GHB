@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private Button Login;
     private Button Register;
     private int counter = 5;
-
+    //check
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
