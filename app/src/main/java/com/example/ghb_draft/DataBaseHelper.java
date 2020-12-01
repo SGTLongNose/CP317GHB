@@ -144,6 +144,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             }
         }
 
+        public boolean addAccount(Accounts account) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues cv3 = new ContentValues();
+            cv3.put(ACCOUNT_EMAIL, account.getEmail());
+            cv3.put(ACCOUNT_BALANCE, account.getBalance());
+            cv3.put(ACCOUNT_TYPE, account.getType());
+            cv3.put(STUDENT_NUMBER, account.getStudentNumber());
+            long insert = db.insert(ACCOUNTS_TABLE, null, cv3);
+            if (insert == -1){
+                return false;
+            }else{
+                return true;
+            }
+        }
+
         public boolean deleteOne(){
             // find customerModel in the database. If it found, delete it and return true.
             // if it is not found, return false
