@@ -42,6 +42,7 @@ public class Main_Page extends AppCompatActivity {
                 new AccountClass("Credit", "Amount",R.drawable.ic_baseline_credit_card_24),
                 new AccountClass("Debit", "Amount",R.drawable.ic_baseline_monetization_on_24),
 
+
         };
 
         AccountAdapter adapter = new AccountAdapter(this,R.layout.accountlist,countries);

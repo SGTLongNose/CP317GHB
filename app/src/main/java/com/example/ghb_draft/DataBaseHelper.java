@@ -15,6 +15,11 @@ import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
+        public static final String ACCOUNTS_TABLE = "ACCOUNTS_TABLE";
+        public static final String ACCOUNT_EMAIL = "ACCOUNT_EMAIL";
+        public static final String ACCOUNT_BALANCE = "ACCOUNT_BALANCE";
+        public static final String ACCOUNT_TYPE = "ACCOUNT_TYPE";
+        public static final String STUDENT_NUMBER = "STUDENT_NUMBER";
         public static final String CUSTOMER_TABLE = "CUSTOMER_TABLE";
         public static final String COLUMN_CUSTOMER_NAME = "CUSTOMER_NAME";
         public static final String COLUMN_CUSTOMER_EMAIL = "CUSTOMER_EMAIL";
@@ -39,9 +44,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         public void onCreate(SQLiteDatabase db) {
             String createTableStatement = "CREATE TABLE " + CUSTOMER_TABLE + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_CUSTOMER_NAME + " TEXT, " + COLUMN_CUSTOMER_EMAIL + " TEXT)";
             String createTableStatement2 = "CREATE TABLE " + USER_TABLE + " (" + USER_FULL_NAME + " TEXT, " + USER_PHONE_NUMBER + " TEXT, " + USER_EMAIL + " TEXT, " + USER_PASSWORD + " TEXT)";
+            String createTableStatement3 = "CREATE TABLE " + ACCOUNTS_TABLE + " (" + ACCOUNT_EMAIL + " TEXT, " + ACCOUNT_BALANCE + " FLOAT, " + ACCOUNT_TYPE + " TEXT, " + STUDENT_NUMBER + " INTEGER)";
 
             db.execSQL(createTableStatement);
             db.execSQL(createTableStatement2);
+            db.execSQL(createTableStatement3);
         }
 
         // this is called if the database version number changes. It prevents previous users apps from breaking when you change the database design
