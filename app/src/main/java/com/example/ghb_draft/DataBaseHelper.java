@@ -137,13 +137,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             }
         }
 
-        public boolean deleteOne(UserModel userModel){
+        public boolean deleteOne(){
             // find customerModel in the database. If it found, delete it and return true.
             // if it is not found, return false
 
             SQLiteDatabase db = this.getWritableDatabase();
-            String queryString = "DELETE FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = " + userModel.getUserEmail();
-            Cursor cursor =  db.rawQuery(queryString, null);
+            String queryString = "DELETE FROM " + USER_TABLE + " WHERE " + USER_EMAIL + "= ?";
+            Cursor cursor = db.rawQuery(queryString, new String[] {ACTIVE_USER});
 
             if (cursor.moveToFirst()){
                 return true;
@@ -262,17 +262,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean updateSettings(String name, String phone, String email, String password) {
+    public boolean updateSettings(String name, String phone, String password) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(USER_FULL_NAME, name);
         contentValues.put(USER_PHONE_NUMBER, phone);
-        contentValues.put(USER_EMAIL, email);
         contentValues.put(USER_PASSWORD, password);
 
-        db.update(USER_TABLE, contentValues, "USER_EMAIL = ?", new String[] {email});
+        db.update(USER_TABLE, contentValues, "USER_EMAIL = ?", new String[] {ACTIVE_USER});
 
         return true;
 
