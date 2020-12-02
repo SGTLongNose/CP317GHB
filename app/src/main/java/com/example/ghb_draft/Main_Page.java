@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,7 +29,8 @@ public class Main_Page extends AppCompatActivity {
     private EditText newcontactpop_firstname, getNewcontactpop_lastname, getNewcontactpop_mobile, getNewcontactpop_email;
     private Button newcontactpopup_cancel, getNewcontactpopup_save;
     private ListView accountList;
-
+    ArrayAdapter accountArrayAdapter;
+    DataBaseHelper dataBaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +38,10 @@ public class Main_Page extends AppCompatActivity {
         setContentView(R.layout.activity_main__page);
 
         accountList = (ListView)findViewById(R.id.lv_accountList);
-
-        AccountClass[] countries = new AccountClass[]{
-                new AccountClass("Savings", "Amount",R.drawable.ic_baseline_money_24),
-                new AccountClass("Credit", "Amount",R.drawable.ic_baseline_credit_card_24),
-                new AccountClass("Debit", "Amount",R.drawable.ic_baseline_monetization_on_24),
+        dataBaseHelper = new DataBaseHelper(Main_Page.this);
+        ShowAccountsOnListView(dataBaseHelper);
 
 
-        };
-
-        AccountAdapter adapter = new AccountAdapter(this,R.layout.accountlist,countries);
-        accountList.setAdapter(adapter);
 
 
         button = (ImageButton) findViewById(R.id.btn_SendFunds);
@@ -86,6 +81,10 @@ public class Main_Page extends AppCompatActivity {
             }
         });
 
+    }
+    private void ShowAccountsOnListView(DataBaseHelper dataBaseHelper2) {
+        accountArrayAdapter = new ArrayAdapter<Accounts>(Main_Page.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getAccounts());
+        accountList.setAdapter((accountArrayAdapter));
     }
     public void openETransfer() {
         Intent intent = new Intent(this, SendEtransfer.class);

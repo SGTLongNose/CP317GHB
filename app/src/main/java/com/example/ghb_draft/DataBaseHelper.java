@@ -192,36 +192,60 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
 
 
-        public List<CustomerModel> getEveryone() {
-            List<CustomerModel> returnList = new ArrayList<>();
+    public List<CustomerModel> getEveryone() {
+        List<CustomerModel> returnList = new ArrayList<>();
 
-            // get data from the database
+        // get data from the database
 
-            String queryString = "SELECT * FROM " + CUSTOMER_TABLE;
+        String queryString = "SELECT * FROM " + CUSTOMER_TABLE;
 
-            SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
-            Cursor cursor = db.rawQuery(queryString, null);
-            if (cursor.moveToFirst()) {
-                // loop through the cursor (result set) and create new customer objects. Put them into the return list.
-                do {
-                    int customerID = cursor.getInt(0);
-                    String customerName = cursor.getString(1);
-                    String customerEmail = cursor.getString(2);
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            // loop through the cursor (result set) and create new customer objects. Put them into the return list.
+            do {
+                int customerID = cursor.getInt(0);
+                String customerName = cursor.getString(1);
+                String customerEmail = cursor.getString(2);
 
-                    CustomerModel newCustomer = new CustomerModel(customerID, customerName, customerEmail);
-                    returnList.add(newCustomer);
-                } while (cursor.moveToNext());
-            }
-            else {
-                // failure. do not add anything to the list
-            }
-
-            // close both the cursor and the db when done
-            cursor.close();
-            db.close();
-            return returnList;
+                CustomerModel newCustomer = new CustomerModel(customerID, customerName, customerEmail);
+                returnList.add(newCustomer);
+            } while (cursor.moveToNext());
         }
+        else {
+            // failure. do not add anything to the list
+        }
+
+        // close both the cursor and the db when done
+        cursor.close();
+        db.close();
+        return returnList;
+    }
+    public List<Accounts> getAccounts() {
+        List<Accounts> returnList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT * FROM " + ACCOUNTS_TABLE;
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            do {
+                String accountEmail = cursor.getString(0);
+                if (accountEmail == ACTIVE_USER) {
+                    Float accountBalance = cursor.getFloat(1);
+                    String accountType = cursor.getString(2);
+                    Integer studentNumber = cursor.getInt(3);
+                    Accounts account = new Accounts(accountEmail, accountBalance, accountType, studentNumber);
+                    returnList.add(account);
+                } else {
+
+                }
+            } while (cursor.moveToNext());
+            }
+        cursor.close();
+        db.close();
+        return returnList;
+        }
+
 
     public boolean isValidEmailAndPassword(String email, String password) {
         UserModel user = new UserModel();
