@@ -18,6 +18,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class Main_Page extends AppCompatActivity {
     private ImageButton button;
     private ImageButton button2;
@@ -26,8 +28,8 @@ public class Main_Page extends AppCompatActivity {
     private ImageButton button5;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-    private EditText newcontactpop_firstname, getNewcontactpop_lastname, getNewcontactpop_mobile, getNewcontactpop_email;
-    private Button newcontactpopup_cancel, getNewcontactpopup_save;
+    private EditText oneCard_ID;
+    private Button oneCard_cancel, oneCard_add;
     private ListView accountList;
     ArrayAdapter accountArrayAdapter;
     DataBaseHelper dataBaseHelper;
@@ -39,10 +41,8 @@ public class Main_Page extends AppCompatActivity {
 
         accountList = (ListView)findViewById(R.id.lv_accountList);
         dataBaseHelper = new DataBaseHelper(Main_Page.this);
+
         ShowAccountsOnListView(dataBaseHelper);
-
-
-
 
         button = (ImageButton) findViewById(R.id.btn_SendFunds);
         button.setOnClickListener(new View.OnClickListener() {
@@ -144,25 +144,24 @@ public class Main_Page extends AppCompatActivity {
 
     public void createNewContactDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
-        final View contactPopupView = getLayoutInflater().inflate(R.layout.popup, null);
-        newcontactpop_firstname = (EditText) contactPopupView.findViewById(R.id.newcontactpopup_firstname);
-        getNewcontactpop_lastname = (EditText) contactPopupView.findViewById(R.id.newcontactpopup_lastname);
-        getNewcontactpop_mobile = (EditText) contactPopupView.findViewById(R.id.newcontactpopup_mobile);
-        getNewcontactpop_email = (EditText) contactPopupView.findViewById(R.id.newcontactpopup_email);
+        final View contactPopupView = getLayoutInflater().inflate(R.layout.onecardpopup, null);
+        oneCard_ID = (EditText) contactPopupView.findViewById(R.id.oneCard_ID);
 
-        getNewcontactpopup_save = (Button) contactPopupView.findViewById(R.id.saveButton);
-        newcontactpopup_cancel = (Button) contactPopupView.findViewById(R.id.cancelButton);
+        oneCard_add = (Button) contactPopupView.findViewById(R.id.oneCard_add);
+        oneCard_cancel = (Button) contactPopupView.findViewById(R.id.oneCard_cancel);
 
         dialogBuilder.setView(contactPopupView);
         dialog = dialogBuilder.create();
         dialog.show();
 
-        getNewcontactpopup_save.setOnClickListener(new View.OnClickListener() {
+        oneCard_add.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
+                dataBaseHelper.addOneCard(Integer.parseInt(oneCard_ID.getText().toString()));
 
+                dialog.dismiss();
             }
         });
-        newcontactpopup_cancel.setOnClickListener(new View.OnClickListener() {
+        oneCard_cancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 dialog.dismiss();
             }

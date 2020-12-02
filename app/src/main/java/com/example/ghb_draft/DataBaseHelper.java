@@ -1,5 +1,6 @@
 package com.example.ghb_draft;
 
+import android.accounts.Account;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -57,6 +58,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         }
 
+        public boolean addOneCard(int ID) {
+
+                SQLiteDatabase db = this.getWritableDatabase();
+                ContentValues cv = new ContentValues();
+
+                cv.put(STUDENT_NUMBER, ID);
+
+                db.update(ACCOUNTS_TABLE, cv, "ACCOUNT_EMAIL = ?", new String[] {ACTIVE_USER});
+
+
+            return true;
+
+        }
+
         public boolean addOne(CustomerModel customerModel){
 
             SQLiteDatabase db = this.getWritableDatabase();
@@ -77,6 +92,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
         }
+        public boolean addOne(Accounts account){
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+
+            cv.put(ACCOUNT_EMAIL, account.getEmail());
+            cv.put(ACCOUNT_BALANCE, account.getBalance());
+            cv.put(ACCOUNT_TYPE, account.getType());
+            cv.put(STUDENT_NUMBER, account.getStudentNumber());
+
+
+            long insert = db.insert(ACCOUNTS_TABLE, null, cv);
+
+            if (insert == -1){
+                return false;
+            } else {
+                return true;
+            }
+
+
+    }
 
         public boolean isEmail(String email) {
             SQLiteDatabase db = getWritableDatabase();
@@ -225,20 +261,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public List<Accounts> getAccounts() {
         List<Accounts> returnList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String queryString = "SELECT * FROM " + ACCOUNTS_TABLE;
-        Cursor cursor = db.rawQuery(queryString, null);
+        String queryString = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
+        Cursor cursor = db.rawQuery(queryString, new String[] {ACTIVE_USER});
         if (cursor.moveToFirst()) {
             do {
                 String accountEmail = cursor.getString(0);
-                if (accountEmail == ACTIVE_USER) {
-                    Float accountBalance = cursor.getFloat(1);
-                    String accountType = cursor.getString(2);
-                    Integer studentNumber = cursor.getInt(3);
-                    Accounts account = new Accounts(accountEmail, accountBalance, accountType, studentNumber);
-                    returnList.add(account);
-                } else {
+                Float accountBalance = cursor.getFloat(1);
+                String accountType = cursor.getString(2);
+                Integer studentNumber = cursor.getInt(3);
+                Accounts account = new Accounts(accountEmail, accountBalance, accountType, studentNumber);
+                returnList.add(account);
 
-                }
             } while (cursor.moveToNext());
             }
         cursor.close();
@@ -278,8 +311,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public ArrayList<String> grabInfo() {
 
         String userString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
-
-        Log.d("9", ACTIVE_USER);
 
         ArrayList<String> list = new ArrayList<>();
 
@@ -321,6 +352,38 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return true;
 
+    }
+
+    public boolean sendEtransfer(String user, String rec, int amount) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cvUser = new ContentValues();
+        ContentValues cvRec = new ContentValues();
+
+        String userString = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
+        String recString = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
+
+        Cursor cursor = db.rawQuery(userString, new String[]{user});
+        Cursor cursor2 = db.rawQuery(recString, new String[]{rec});
+
+
+        if (cursor.moveToFirst()) {
+            int x = Integer.parseInt(ACCOUNT_BALANCE);
+            int y = x - amount;
+            cvUser.put(ACCOUNT_BALANCE, y);
+        } else {
+            return false;
+        }
+        if (cursor2.moveToFirst()) {
+            int x2 = Integer.parseInt(ACCOUNT_BALANCE);
+            int y2 = x2 + amount;
+            cvRec.put(ACCOUNT_BALANCE, y2);
+        } else {
+            return false;
+        }
+
+
+        return true;
     }
 
 

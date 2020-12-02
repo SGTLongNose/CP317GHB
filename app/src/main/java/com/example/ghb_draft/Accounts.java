@@ -12,20 +12,13 @@ public class Accounts {
         this.studentNumber = studentNumber;
     }
     public Accounts() {
-        this.email = "";
-        this.balance = null;
-        this.type = "";
-        this.studentNumber = null;
+
     }
 
     @Override
     public String toString() {
-        return "Accounts{" +
-                "email='" + email + '\'' +
-                ", type='" + type + '\'' +
-                ", balance=" + balance +
-                ", studentNumber=" + studentNumber +
-                '}';
+        return "Account: " + type +
+                ", Balance = " + balance;
     }
 
     public String getEmail() {
