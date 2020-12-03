@@ -24,7 +24,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         public static final String CUSTOMER_TABLE = "CUSTOMER_TABLE";
         public static final String COLUMN_CUSTOMER_NAME = "CUSTOMER_NAME";
         public static final String COLUMN_CUSTOMER_EMAIL = "CUSTOMER_EMAIL";
-        public static final String COLUMN_ID = "ID";
+        public static final String USER_ID = "USER_ID";
         public static final String USER_TABLE = "USER_TABLE";
         public static final String USER_EMAIL = "USER_EMAIL";
         public static final String USER_PHONE_NUMBER = "USER_PHONE_NUMBER";
@@ -43,7 +43,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         // this is called the first time a database is accessed. There should be code in here to create a new database.
         @Override
         public void onCreate(SQLiteDatabase db) {
-            String createTableStatement = "CREATE TABLE " + CUSTOMER_TABLE + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_CUSTOMER_NAME + " TEXT, " + COLUMN_CUSTOMER_EMAIL + " TEXT)";
+            String createTableStatement = "CREATE TABLE " + CUSTOMER_TABLE + " (" + USER_ID + " TEXT, " + COLUMN_CUSTOMER_NAME + " TEXT, " + COLUMN_CUSTOMER_EMAIL + " TEXT)";
             String createTableStatement2 = "CREATE TABLE " + USER_TABLE + " (" + USER_FULL_NAME + " TEXT, " + USER_PHONE_NUMBER + " TEXT, " + USER_EMAIL + " TEXT, " + USER_PASSWORD + " TEXT)";
             String createTableStatement3 = "CREATE TABLE " + ACCOUNTS_TABLE + " (" + ACCOUNT_EMAIL + " TEXT, " + ACCOUNT_BALANCE + " FLOAT, " + ACCOUNT_TYPE + " TEXT, " + STUDENT_NUMBER + " INTEGER)";
 
@@ -76,7 +76,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues cv = new ContentValues();
-
+            cv.put(USER_ID, customerModel.getUser());
             cv.put(COLUMN_CUSTOMER_NAME, customerModel.getName());
             cv.put(COLUMN_CUSTOMER_EMAIL, customerModel.getEmail());
 
@@ -216,7 +216,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             // if it is not found, return false
 
             SQLiteDatabase db = this.getWritableDatabase();
-            String queryString = "DELETE FROM " + CUSTOMER_TABLE + " WHERE " + COLUMN_ID + " = " + customerModel.getId();
+            String queryString = "DELETE FROM " + CUSTOMER_TABLE + " WHERE " + USER_ID + " = " + customerModel.getUser();
             Cursor cursor =  db.rawQuery(queryString, null);
 
             if (cursor.moveToFirst()){
@@ -232,21 +232,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         List<CustomerModel> returnList = new ArrayList<>();
 
         // get data from the database
-
-        String queryString = "SELECT * FROM " + CUSTOMER_TABLE;
-
         SQLiteDatabase db = this.getReadableDatabase();
+        String queryString = "SELECT * FROM " + CUSTOMER_TABLE + " WHERE " + USER_ID + " = ?";
 
-        Cursor cursor = db.rawQuery(queryString, null);
+
+
+        Cursor cursor = db.rawQuery(queryString, new String[] {ACTIVE_USER});
         if (cursor.moveToFirst()) {
             // loop through the cursor (result set) and create new customer objects. Put them into the return list.
             do {
-                int customerID = cursor.getInt(0);
+                String userID = cursor.getString(0);
                 String customerName = cursor.getString(1);
                 String customerEmail = cursor.getString(2);
-
-                CustomerModel newCustomer = new CustomerModel(customerID, customerName, customerEmail);
+                CustomerModel newCustomer = new CustomerModel(userID, customerName, customerEmail);
                 returnList.add(newCustomer);
+
             } while (cursor.moveToNext());
         }
         else {
@@ -385,7 +385,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return true;
     }
-
+    public String getActiveUser(){
+            return ACTIVE_USER;
+    }
 
 
 

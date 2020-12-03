@@ -83,7 +83,7 @@ public class Main_Page extends AppCompatActivity {
 
     }
     private void ShowAccountsOnListView(DataBaseHelper dataBaseHelper2) {
-        accountArrayAdapter = new ArrayAdapter<Accounts>(Main_Page.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getAccounts());
+        accountArrayAdapter = new ArrayAdapter<>(Main_Page.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getAccounts());
         accountList.setAdapter((accountArrayAdapter));
     }
     public void openETransfer() {

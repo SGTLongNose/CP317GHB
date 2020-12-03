@@ -1,13 +1,12 @@
 package com.example.ghb_draft;
 
 public class CustomerModel {
-    private int id;
-    private String name, email;
+    private String name, email, user;
 
     // constructors
 
-    public CustomerModel(int id, String name, String email) {
-        this.id = id;
+    public CustomerModel(String user, String name, String email) {
+        this.user = user;
         this.name = name;
         this.email = email;
     }
@@ -26,12 +25,10 @@ public class CustomerModel {
     // getters and setters
 
 
-    public int getId() {
-        return id;
-    }
+    public String getUser() { return user; }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getName() {

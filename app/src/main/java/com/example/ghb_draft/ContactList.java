@@ -69,8 +69,10 @@ public class ContactList extends AppCompatActivity {
                     if (et_email.getText().toString().isEmpty() || et_name.getText().toString().isEmpty()) {
                         Toast.makeText(ContactList.this, "Error creating customer", Toast.LENGTH_SHORT).show();
                     } else {
-                        customerModel = new CustomerModel(-1, et_name.getText().toString(), et_email.getText().toString());
+                        String active = dataBaseHelper.getActiveUser();
+                        customerModel = new CustomerModel(active, et_name.getText().toString(), et_email.getText().toString());
                         dataBaseHelper.addOne(customerModel);
+                        Toast.makeText(ContactList.this, "Customer added " + active, Toast.LENGTH_SHORT).show();
                     }
                 }
                 catch (Exception e){
@@ -97,7 +99,7 @@ public class ContactList extends AppCompatActivity {
     }
 
     private void ShowCustomersOnListView(DataBaseHelper dataBaseHelper2) {
-        customerArrayAdapter = new ArrayAdapter<CustomerModel>(ContactList.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getEveryone());
+        customerArrayAdapter = new ArrayAdapter<>(ContactList.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getEveryone());
         lv_customerList.setAdapter((customerArrayAdapter));
     }
     @Override
