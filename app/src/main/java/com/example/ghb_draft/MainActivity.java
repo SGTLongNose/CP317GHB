@@ -55,24 +55,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                try {
-                    Log.d("Test", "------------------------------------------------------------");
-                    boolean x = dataBaseHelper.isValidEmailAndPassword(Name.getText().toString(), Password.getText().toString());
-                    Log.d("Test", "------------------------------------------------------------");
-                    Log.d("Test1", Name.getText().toString() + "Add ON");
-                    Log.d("Test2", Password.getText().toString() + "Add ON");
+                if (Name.getText().toString().equals("Admin") && Password.getText().toString().equals("password")) {
+                    dataBaseHelper.isAdmin(Name.getText().toString());
+                    openMainPage();
+                } else {
+                    try {
+                        Log.d("Test", "------------------------------------------------------------");
+                        boolean x = dataBaseHelper.isValidEmailAndPassword(Name.getText().toString(), Password.getText().toString());
+                        Log.d("Test", "------------------------------------------------------------");
+                        Log.d("Test1", Name.getText().toString() + "Add ON");
+                        Log.d("Test2", Password.getText().toString() + "Add ON");
 
-                    if (!x) {
-                        Toast.makeText(MainActivity.this, "The combination of Email and Password is not registered in the User DB", Toast.LENGTH_SHORT).show();
-                        counter--;
-                        Attempts.setText("Number of Attempts Remaining: " + String.valueOf(counter));
-                    } else {
-                        openMainPage();
+                        if (!x) {
+                            Toast.makeText(MainActivity.this, "The combination of Email and Password is not registered in the User DB", Toast.LENGTH_SHORT).show();
+                            counter--;
+                            Attempts.setText("Number of Attempts Remaining: " + String.valueOf(counter));
+                        } else {
+                            openMainPage();
+                        }
+
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, "Error with registration", Toast.LENGTH_SHORT).show();
+                        Log.d("1", e.getMessage());
                     }
-
-                } catch (Exception e) {
-                    Toast.makeText(MainActivity.this, "Error with registration", Toast.LENGTH_SHORT).show();
-                    Log.d("1", e.getMessage());
                 }
 
             }

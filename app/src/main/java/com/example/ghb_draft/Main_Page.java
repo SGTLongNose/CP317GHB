@@ -31,7 +31,7 @@ public class Main_Page extends AppCompatActivity {
     private EditText oneCard_ID;
     private Button oneCard_cancel, oneCard_add;
     private ListView accountList;
-    ArrayAdapter accountArrayAdapter;
+    ArrayAdapter accountArrayAdapter, allAccountArrayAdapter;
     DataBaseHelper dataBaseHelper;
 
     @Override
@@ -41,6 +41,11 @@ public class Main_Page extends AppCompatActivity {
 
         accountList = (ListView)findViewById(R.id.lv_accountList);
         dataBaseHelper = new DataBaseHelper(Main_Page.this);
+
+        if (dataBaseHelper.getActiveUser().equals("Admin")) {
+            Toast.makeText(getApplicationContext(), "Admin successful logged in.", Toast.LENGTH_LONG).show();
+            ShowAllAccountsOnListView(dataBaseHelper);
+        }
 
         ShowAccountsOnListView(dataBaseHelper);
 
@@ -86,6 +91,10 @@ public class Main_Page extends AppCompatActivity {
         accountArrayAdapter = new ArrayAdapter<>(Main_Page.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getAccounts());
         accountList.setAdapter((accountArrayAdapter));
     }
+    private void ShowAllAccountsOnListView(DataBaseHelper dataBaseHelper3) {
+        allAccountArrayAdapter = new ArrayAdapter<>(Main_Page.this, android.R.layout.simple_list_item_1, dataBaseHelper3.getAllAccounts());
+        accountList.setAdapter((allAccountArrayAdapter));
+    }
     public void openETransfer() {
         Intent intent = new Intent(this, SendEtransfer.class);
         startActivity(intent);
@@ -111,6 +120,10 @@ public class Main_Page extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.first_menu, menu);
         return true;
     }
+    public void openNewAccount() {
+        Intent intent = new Intent(this, AddNewAccounts.class);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -121,16 +134,8 @@ public class Main_Page extends AppCompatActivity {
         }
         if (id == R.id.menu2) {
             //Toast.makeText(getApplicationContext(), "Hello menu 2", Toast.LENGTH_LONG).show();
-            createNewContactDialog();
-        }
-        if (id == R.id.menu3) {
-            Toast.makeText(getApplicationContext(), "Heya", Toast.LENGTH_LONG).show();
-        }
-        if (id == R.id.submenu1) {
-            Toast.makeText(getApplicationContext(), "Hello sub", Toast.LENGTH_LONG).show();
-        }
-        if (id == R.id.submenu2) {
-            Toast.makeText(getApplicationContext(), "sub Hello", Toast.LENGTH_LONG).show();
+            //createNewContactDialog();
+            openNewAccount();
         }
         if (id == R.id.it_log) {
             Intent intent = new Intent(this, MainActivity.class);

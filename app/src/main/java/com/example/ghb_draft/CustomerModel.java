@@ -19,7 +19,7 @@ public class CustomerModel {
     public String toString() {
         return
                 "Name: " + name +
-                ", Email: " + email;
+                        ", Email: " + email;
     }
 
     // getters and setters

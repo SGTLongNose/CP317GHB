@@ -47,9 +47,13 @@ public class SendEtransfer extends AppCompatActivity {
         btn_sendTrans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataBaseHelper.sendEtransfer(userAccount.getText().toString(), recipientAccount.getText().toString(), Integer.parseInt(transAmount.getText().toString()));
-                openHomePage();
-                Toast.makeText(getApplicationContext(), "Hello menu 2", Toast.LENGTH_LONG).show();
+                if (userAccount.getText().toString().isEmpty() || recipientAccount.getText().toString().isEmpty() || transAmount.getText().toString().isEmpty()) {
+                    Toast.makeText(SendEtransfer.this, "Error changing info. Please fill in all sections.", Toast.LENGTH_SHORT).show();
+                } else {
+                  //  dataBaseHelper.sendEtransfer(userAccount.getText().toString(), recipientAccount.getText().toString(), Float.parseFloat(transAmount.getText().toString()));
+                    finish();
+                    openHomePage();
+                }
             }
         });
 

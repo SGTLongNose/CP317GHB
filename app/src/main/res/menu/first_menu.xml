@@ -12,7 +12,7 @@
     <item
         android:id="@+id/menu2"
         menu:showAsAction="never"
-        android:title="Add One Card Account"
+        android:title="Add New Account"
         />
 
     <item
@@ -21,23 +21,22 @@
         android:title="Log Out"
        />
 
-    <item
-        android:id="@+id/menu3"
-        menu:showAsAction="never"
-        android:title="Settings"
-        >
-
-        <menu>
-            <item
-                android:id="@+id/submenu1"
-                menu:showAsAction="never"
-                android:title="Delete Account"
-                />
-            <item
-                android:id="@+id/submenu2"
-                menu:showAsAction="never"
-                android:title="Change Information"
-                />
-        </menu>
-    </item>
+<!--    <item-->
+<!--        android:id="@+id/menu3"-->
+<!--        menu:showAsAction="never"-->
+<!--        android:title="Settings"-->
+<!--        >-->
+<!--        <menu>-->
+<!--            <item-->
+<!--                android:id="@+id/submenu1"-->
+<!--                menu:showAsAction="never"-->
+<!--                android:title="Delete Account"-->
+<!--                />-->
+<!--            <item-->
+<!--                android:id="@+id/submenu2"-->
+<!--                menu:showAsAction="never"-->
+<!--                android:title="Change Information"-->
+<!--                />-->
+<!--        </menu>-->
+<!--    </item>-->
 </menu>

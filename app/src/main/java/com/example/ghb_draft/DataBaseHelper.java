@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataBaseHelper extends SQLiteOpenHelper {
+    public class DataBaseHelper extends SQLiteOpenHelper {
 
         public static final String ACCOUNTS_TABLE = "ACCOUNTS_TABLE";
         public static final String ACCOUNT_EMAIL = "ACCOUNT_EMAIL";
@@ -60,12 +60,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         public boolean addOneCard(int ID) {
 
-                SQLiteDatabase db = this.getWritableDatabase();
-                ContentValues cv = new ContentValues();
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
 
-                cv.put(STUDENT_NUMBER, ID);
+            cv.put(STUDENT_NUMBER, ID);
 
-                db.update(ACCOUNTS_TABLE, cv, "ACCOUNT_EMAIL = ?", new String[] {ACTIVE_USER});
+            db.update(ACCOUNTS_TABLE, cv, "ACCOUNT_EMAIL = ?", new String[] {ACTIVE_USER});
 
 
             return true;
@@ -112,7 +112,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             }
 
 
-    }
+        }
 
         public boolean isEmail(String email) {
             SQLiteDatabase db = getWritableDatabase();
@@ -228,167 +228,194 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
 
 
-    public List<CustomerModel> getEveryone() {
-        List<CustomerModel> returnList = new ArrayList<>();
+        public List<CustomerModel> getEveryone() {
+            List<CustomerModel> returnList = new ArrayList<>();
 
-        // get data from the database
-        SQLiteDatabase db = this.getReadableDatabase();
-        String queryString = "SELECT * FROM " + CUSTOMER_TABLE + " WHERE " + USER_ID + " = ?";
+            // get data from the database
+            SQLiteDatabase db = this.getReadableDatabase();
+            String queryString = "SELECT * FROM " + CUSTOMER_TABLE + " WHERE " + USER_ID + " = ?";
 
 
 
-        Cursor cursor = db.rawQuery(queryString, new String[] {ACTIVE_USER});
-        if (cursor.moveToFirst()) {
-            // loop through the cursor (result set) and create new customer objects. Put them into the return list.
-            do {
-                String userID = cursor.getString(0);
-                String customerName = cursor.getString(1);
-                String customerEmail = cursor.getString(2);
-                CustomerModel newCustomer = new CustomerModel(userID, customerName, customerEmail);
-                returnList.add(newCustomer);
+            Cursor cursor = db.rawQuery(queryString, new String[] {ACTIVE_USER});
+            if (cursor.moveToFirst()) {
+                // loop through the cursor (result set) and create new customer objects. Put them into the return list.
+                do {
+                    String userID = cursor.getString(0);
+                    String customerName = cursor.getString(1);
+                    String customerEmail = cursor.getString(2);
+                    CustomerModel newCustomer = new CustomerModel(userID, customerName, customerEmail);
+                    returnList.add(newCustomer);
 
-            } while (cursor.moveToNext());
-        }
-        else {
-            // failure. do not add anything to the list
-        }
-
-        // close both the cursor and the db when done
-        cursor.close();
-        db.close();
-        return returnList;
-    }
-    public List<Accounts> getAccounts() {
-        List<Accounts> returnList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        String queryString = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
-        Cursor cursor = db.rawQuery(queryString, new String[] {ACTIVE_USER});
-        if (cursor.moveToFirst()) {
-            do {
-                String accountEmail = cursor.getString(0);
-                Float accountBalance = cursor.getFloat(1);
-                String accountType = cursor.getString(2);
-                Integer studentNumber = cursor.getInt(3);
-                Accounts account = new Accounts(accountEmail, accountBalance, accountType, studentNumber);
-                returnList.add(account);
-
-            } while (cursor.moveToNext());
+                } while (cursor.moveToNext());
             }
-        cursor.close();
-        db.close();
-        return returnList;
-        }
-
-
-    public boolean isValidEmailAndPassword(String email, String password) {
-        UserModel user = new UserModel();
-
-        // get data from the database
-        String queryString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(queryString, new String[] {email});
-
-        boolean hasObject = false;
-        if (cursor.moveToNext()) {
-            // loop through the cursor (result set) and create new customer objects. Put them into the return list.
-            String pw = cursor.getString(3);
-            Log.d("idk", pw);
-            if (pw.equals(password)) {
-                hasObject = true;
+            else {
+                // failure. do not add anything to the list
             }
 
+            // close both the cursor and the db when done
+            cursor.close();
+            db.close();
+            return returnList;
         }
-        ACTIVE_USER = email;
-        // close both the cursor and the db when done
-        cursor.close();
-        db.close();
-        return hasObject;
-    }
 
+        public List<Accounts> getAllAccounts() {
+            List<Accounts> list = new ArrayList<>();
+            SQLiteDatabase db = this.getReadableDatabase();
+            String query = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
+            Cursor cursor = db.rawQuery(query, null);
 
-    public ArrayList<String> grabInfo() {
-
-        String userString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
-
-        ArrayList<String> list = new ArrayList<>();
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(userString, new String[]{ACTIVE_USER});
-
-        if (cursor.moveToFirst()) {
-            // loop through the cursor (result set) and create new customer objects. Put them into the return list.
-
-            String pw = cursor.getString(3);
-            String name = cursor.getString(0);
-            String phone = cursor.getString(1);
-
-            list.add(name);
-            list.add(phone);
-            list.add(ACTIVE_USER);
-            list.add(pw);
+            if (cursor.moveToFirst()) {
+                do {
+                    String accountEmail = cursor.getString(0);
+                    Float accountBalance = cursor.getFloat(1);
+                    String accountType = cursor.getString(2);
+                    Integer studentNumber = cursor.getInt(3);
+                    Accounts account = new Accounts(accountEmail, accountBalance, accountType, studentNumber);
+                    list.add(account);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return list;
         }
-        else {
-            // failure. do not add anything to the list
+
+        public List<Accounts> getAccounts() {
+            List<Accounts> returnList = new ArrayList<>();
+            SQLiteDatabase db = this.getReadableDatabase();
+            String queryString = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
+            Cursor cursor = db.rawQuery(queryString, new String[] {ACTIVE_USER});
+            if (cursor.moveToFirst()) {
+                do {
+                    String accountEmail = cursor.getString(0);
+                    Float accountBalance = cursor.getFloat(1);
+                    String accountType = cursor.getString(2);
+                    Integer studentNumber = cursor.getInt(3);
+                    Accounts account = new Accounts(accountEmail, accountBalance, accountType, studentNumber);
+                    returnList.add(account);
+
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return returnList;
         }
-        cursor.close();
-        db.close();
-        return list;
 
-    }
+        public boolean isAdmin (String email) {
+            ACTIVE_USER = email;
 
-    public boolean updateSettings(String name, String phone, String password) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(USER_FULL_NAME, name);
-        contentValues.put(USER_PHONE_NUMBER, phone);
-        contentValues.put(USER_PASSWORD, password);
-
-        db.update(USER_TABLE, contentValues, "USER_EMAIL = ?", new String[] {ACTIVE_USER});
-
-        return true;
-
-    }
-
-    public boolean sendEtransfer(String user, String rec, int amount) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cvUser = new ContentValues();
-        ContentValues cvRec = new ContentValues();
-
-        String userString = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
-        String recString = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
-
-        Cursor cursor = db.rawQuery(userString, new String[]{user});
-        Cursor cursor2 = db.rawQuery(recString, new String[]{rec});
-
-
-        if (cursor.moveToFirst()) {
-            int x = Integer.parseInt(ACCOUNT_BALANCE);
-            int y = x - amount;
-            cvUser.put(ACCOUNT_BALANCE, y);
-        } else {
-            return false;
+            return true;
         }
-        if (cursor2.moveToFirst()) {
-            int x2 = Integer.parseInt(ACCOUNT_BALANCE);
-            int y2 = x2 + amount;
-            cvRec.put(ACCOUNT_BALANCE, y2);
-        } else {
-            return false;
+
+        public boolean isValidEmailAndPassword(String email, String password) {
+            UserModel user = new UserModel();
+
+            // get data from the database
+            String queryString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(queryString, new String[] {email});
+
+            boolean hasObject = false;
+            if (cursor.moveToNext()) {
+                // loop through the cursor (result set) and create new customer objects. Put them into the return list.
+                String pw = cursor.getString(3);
+                Log.d("idk", pw);
+                if (pw.equals(password)) {
+                    hasObject = true;
+                }
+
+            }
+            ACTIVE_USER = email;
+            // close both the cursor and the db when done
+            cursor.close();
+            db.close();
+            return hasObject;
         }
 
 
-        return true;
-    }
-    public String getActiveUser(){
+        public ArrayList<String> grabInfo() {
+
+            String userString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
+
+            ArrayList<String> list = new ArrayList<>();
+
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(userString, new String[]{ACTIVE_USER});
+
+            if (cursor.moveToFirst()) {
+                // loop through the cursor (result set) and create new customer objects. Put them into the return list.
+
+                String pw = cursor.getString(3);
+                String name = cursor.getString(0);
+                String phone = cursor.getString(1);
+
+                list.add(name);
+                list.add(phone);
+                list.add(ACTIVE_USER);
+                list.add(pw);
+            }
+            else {
+                // failure. do not add anything to the list
+            }
+            cursor.close();
+            db.close();
+            return list;
+
+        }
+
+        public boolean updateSettings(String name, String phone, String password) {
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(USER_FULL_NAME, name);
+            contentValues.put(USER_PHONE_NUMBER, phone);
+            contentValues.put(USER_PASSWORD, password);
+
+            db.update(USER_TABLE, contentValues, "USER_EMAIL = ?", new String[] {ACTIVE_USER});
+
+            return true;
+
+        }
+
+        public boolean sendEtransfer(String user, String rec, int amount) {
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues cvUser = new ContentValues();
+            ContentValues cvRec = new ContentValues();
+
+            String userString = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
+            String recString = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
+
+            Cursor cursor = db.rawQuery(userString, new String[]{user});
+            Cursor cursor2 = db.rawQuery(recString, new String[]{rec});
+
+
+            if (cursor.moveToFirst()) {
+                int x = Integer.parseInt(ACCOUNT_BALANCE);
+                int y = x - amount;
+                cvUser.put(ACCOUNT_BALANCE, y);
+            } else {
+                return false;
+            }
+            if (cursor2.moveToFirst()) {
+                int x2 = Integer.parseInt(ACCOUNT_BALANCE);
+                int y2 = x2 + amount;
+                cvRec.put(ACCOUNT_BALANCE, y2);
+            } else {
+                return false;
+            }
+
+
+            return true;
+        }
+        public String getActiveUser(){
             return ACTIVE_USER;
+        }
+
+
+
     }
-
-
-
-}
