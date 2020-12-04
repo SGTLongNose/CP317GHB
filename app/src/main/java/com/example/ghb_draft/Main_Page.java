@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +42,15 @@ public class Main_Page extends AppCompatActivity {
         setContentView(R.layout.activity_main__page);
 
         accountList = (ListView)findViewById(R.id.lv_accountList);
+        accountList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Accounts clickedAccount = (Accounts) parent.getItemAtPosition(position);
+                dataBaseHelper.deleteAccount(clickedAccount);
+                ShowAccountsOnListView(dataBaseHelper);
+                Toast.makeText(Main_Page.this, "Deleted" + clickedAccount.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
         dataBaseHelper = new DataBaseHelper(Main_Page.this);
 
         if (dataBaseHelper.getActiveUser().equals("Admin")) {

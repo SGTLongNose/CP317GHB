@@ -9,21 +9,22 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class AddNewAccounts extends AppCompatActivity {
-    private Button savings, credit, student;
+    private Button savings, credit, student, save, back;
     private EditText student_num;
     DataBaseHelper dataBaseHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_accounts);
+        back = (Button) findViewById(R.id.btn_add_back);
+        save = (Button) findViewById(R.id.btn_add_save);
         savings = (Button) findViewById(R.id.btn_savings);
         student_num = (EditText) findViewById(R.id.editTextStudentNumber);
         dataBaseHelper = new DataBaseHelper(AddNewAccounts.this);
         savings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Accounts account = new Accounts(dataBaseHelper.getActiveUser(), (float) 0, "Savings", null);
+                Accounts account = new Accounts(dataBaseHelper.getActiveUser(), (float) 0, "Savings", null, -1);
                 dataBaseHelper.addAccount(account);
                 openHomePage();
             }
@@ -32,7 +33,7 @@ public class AddNewAccounts extends AppCompatActivity {
         credit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Accounts account = new Accounts(dataBaseHelper.getActiveUser(), (float) 0, "Credit", null);
+                Accounts account = new Accounts(dataBaseHelper.getActiveUser(), (float) 0, "Credit", null, -1);
                 dataBaseHelper.addAccount(account);
                 openHomePage();
             }
@@ -41,7 +42,22 @@ public class AddNewAccounts extends AppCompatActivity {
         student.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                student_num.setVisibility(View.VISIBLE);
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openHomePage();
+            }
+        });
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int st_num = Integer.parseInt(student_num.getText().toString());
+                Accounts account = new Accounts(dataBaseHelper.getActiveUser(), (float) 0, "One Card", st_num, -1);
+                dataBaseHelper.addAccount(account);
+                openHomePage();
             }
         });
 

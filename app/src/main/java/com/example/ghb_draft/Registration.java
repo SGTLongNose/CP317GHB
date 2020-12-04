@@ -48,7 +48,7 @@ public class Registration extends AppCompatActivity {
 
                     if (dataBaseHelper.isEmail(email) == false) {
                         if (password.getText().toString().equals(rePassword.getText().toString())) {
-                            Accounts starterAccount = new Accounts(emailAddress.getText().toString(), (float) 250, "Savings", null);
+                            Accounts starterAccount = new Accounts(emailAddress.getText().toString(), (float) 250, "Savings", null, -1);
                             userModel = new UserModel(fullName.getText().toString(), phoneNumber.getText().toString(), emailAddress.getText().toString(), password.getText().toString());
                             Toast.makeText(Registration.this, userModel.toString(), Toast.LENGTH_SHORT).show();
                             dataBaseHelper.addUser(userModel);
