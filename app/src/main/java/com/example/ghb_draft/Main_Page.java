@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.accounts.Account;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main_Page extends AppCompatActivity {
@@ -31,7 +34,7 @@ public class Main_Page extends AppCompatActivity {
     private EditText oneCard_ID;
     private Button oneCard_cancel, oneCard_add;
     private ListView accountList;
-    ArrayAdapter accountArrayAdapter, allAccountArrayAdapter;
+    ArrayAdapter accountArrayAdapter;
     DataBaseHelper dataBaseHelper;
 
     @Override
@@ -39,12 +42,12 @@ public class Main_Page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__page);
 
-        accountList = (ListView)findViewById(R.id.lv_accountList);
+        accountList = (ListView) findViewById(R.id.lv_accountList);
+
         dataBaseHelper = new DataBaseHelper(Main_Page.this);
 
         if (dataBaseHelper.getActiveUser().equals("Admin")) {
             Toast.makeText(getApplicationContext(), "Admin successful logged in.", Toast.LENGTH_LONG).show();
-            ShowAllAccountsOnListView(dataBaseHelper);
         }
 
         ShowAccountsOnListView(dataBaseHelper);
@@ -90,10 +93,6 @@ public class Main_Page extends AppCompatActivity {
     private void ShowAccountsOnListView(DataBaseHelper dataBaseHelper2) {
         accountArrayAdapter = new ArrayAdapter<>(Main_Page.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getAccounts());
         accountList.setAdapter((accountArrayAdapter));
-    }
-    private void ShowAllAccountsOnListView(DataBaseHelper dataBaseHelper3) {
-        allAccountArrayAdapter = new ArrayAdapter<>(Main_Page.this, android.R.layout.simple_list_item_1, dataBaseHelper3.getAllAccounts());
-        accountList.setAdapter((allAccountArrayAdapter));
     }
     public void openETransfer() {
         Intent intent = new Intent(this, SendEtransfer.class);

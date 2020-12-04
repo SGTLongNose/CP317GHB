@@ -36,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
         Login = (Button) findViewById(R.id.btn_Login);
         Register = (Button) findViewById(R.id.btn_Register);
 
-
-
         Attempts.setText("Number of Attempts Remaining: " + String.valueOf(counter));
 
 //        final String[] email = {Name.getText().toString()};
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (Name.getText().toString().equals("Admin") && Password.getText().toString().equals("password")) {
                     dataBaseHelper.isAdmin(Name.getText().toString());
-                    openMainPage();
+                    openAdminMainPage();
                 } else {
                     try {
                         Log.d("Test", "------------------------------------------------------------");
@@ -100,6 +98,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void openMainPage() {
         Intent intent = new Intent(this, Main_Page.class);
+        startActivity(intent);
+    }
+
+    public void openAdminMainPage() {
+        Intent intent = new Intent(this, AdminUserLogin.class);
         startActivity(intent);
     }
 }

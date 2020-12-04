@@ -259,26 +259,6 @@ import java.util.List;
             return returnList;
         }
 
-        public List<Accounts> getAllAccounts() {
-            List<Accounts> list = new ArrayList<>();
-            SQLiteDatabase db = this.getReadableDatabase();
-            String query = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
-            Cursor cursor = db.rawQuery(query, null);
-
-            if (cursor.moveToFirst()) {
-                do {
-                    String accountEmail = cursor.getString(0);
-                    Float accountBalance = cursor.getFloat(1);
-                    String accountType = cursor.getString(2);
-                    Integer studentNumber = cursor.getInt(3);
-                    Accounts account = new Accounts(accountEmail, accountBalance, accountType, studentNumber);
-                    list.add(account);
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-            db.close();
-            return list;
-        }
 
         public List<Accounts> getAccounts() {
             List<Accounts> returnList = new ArrayList<>();
@@ -331,6 +311,25 @@ import java.util.List;
             // close both the cursor and the db when done
             cursor.close();
             db.close();
+            return hasObject;
+        }
+
+        public boolean isValidEmail(String email) {
+            String query = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(query, new String[] {email});
+
+            boolean hasObject = false;
+            if (cursor.moveToNext()) {
+                hasObject = true;
+            } else {
+
+            }
+
+            ACTIVE_USER = email;
+            db.close();
+            cursor.close();
             return hasObject;
         }
 
