@@ -116,7 +116,12 @@ public class Main_Page extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.first_menu, menu);
+        if (dataBaseHelper.getActiveUser().equals("Admin")) {
+            getMenuInflater().inflate(R.menu.admin_menu, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.first_menu, menu);
+        }
+
         return true;
     }
     public void openNewAccount() {
@@ -138,6 +143,10 @@ public class Main_Page extends AppCompatActivity {
         }
         if (id == R.id.it_log) {
             Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        if (id == R.id.it_adminLog) {
+            Intent intent = new Intent(this, AdminUserLogin.class);
             startActivity(intent);
         }
 

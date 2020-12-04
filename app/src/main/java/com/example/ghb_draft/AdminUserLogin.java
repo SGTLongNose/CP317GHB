@@ -20,6 +20,7 @@ public class AdminUserLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_user_login);
+        dataBaseHelper = new DataBaseHelper(AdminUserLogin.this);
 
         email = (EditText) findViewById(R.id.et_userEmail);
 

@@ -328,7 +328,6 @@ import java.util.List;
 
             }
 
-            ACTIVE_USER = email;
             db.close();
             cursor.close();
             return hasObject;
