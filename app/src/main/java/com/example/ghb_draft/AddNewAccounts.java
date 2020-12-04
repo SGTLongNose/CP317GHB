@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class AddNewAccounts extends AppCompatActivity {
     private Button savings, credit, student, save, back;
@@ -54,10 +55,16 @@ public class AddNewAccounts extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int st_num = Integer.parseInt(student_num.getText().toString());
-                Accounts account = new Accounts(dataBaseHelper.getActiveUser(), (float) 0, "One Card", st_num, -1);
-                dataBaseHelper.addAccount(account);
-                openHomePage();
+                try {
+                    int st_num = Integer.parseInt(student_num.getText().toString());
+                    Accounts account = new Accounts(dataBaseHelper.getActiveUser(), (float) 0, "One Card", st_num, -1);
+                    dataBaseHelper.addAccount(account);
+                    openHomePage();
+                } catch (NumberFormatException e){
+                    Toast.makeText(getApplicationContext(), "Invalid Student Number", Toast.LENGTH_LONG).show();
+                    student_num.setText("");
+                }
+
             }
         });
 

@@ -72,6 +72,8 @@ public class ContactList extends AppCompatActivity {
                         String active = dataBaseHelper.getActiveUser();
                         customerModel = new CustomerModel(active, et_name.getText().toString(), et_email.getText().toString());
                         dataBaseHelper.addOne(customerModel);
+                        et_name.setText("");
+                        et_email.setText("");
                         Toast.makeText(ContactList.this, "Customer added " + active, Toast.LENGTH_SHORT).show();
                     }
                 }

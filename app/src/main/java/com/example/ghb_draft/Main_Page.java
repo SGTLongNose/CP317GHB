@@ -33,7 +33,7 @@ public class Main_Page extends AppCompatActivity {
     private EditText oneCard_ID;
     private Button oneCard_cancel, oneCard_add;
     private ListView accountList;
-    ArrayAdapter accountArrayAdapter, allAccountArrayAdapter;
+    ArrayAdapter accountArrayAdapter;
     DataBaseHelper dataBaseHelper;
 
     @Override
@@ -41,7 +41,7 @@ public class Main_Page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__page);
 
-        accountList = (ListView)findViewById(R.id.lv_accountList);
+        accountList = (ListView)findViewById (R.id.lv_accountList);
         accountList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -55,7 +55,6 @@ public class Main_Page extends AppCompatActivity {
 
         if (dataBaseHelper.getActiveUser().equals("Admin")) {
             Toast.makeText(getApplicationContext(), "Admin successful logged in.", Toast.LENGTH_LONG).show();
-            ShowAllAccountsOnListView(dataBaseHelper);
         }
 
         ShowAccountsOnListView(dataBaseHelper);
@@ -102,10 +101,7 @@ public class Main_Page extends AppCompatActivity {
         accountArrayAdapter = new ArrayAdapter<>(Main_Page.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getAccounts());
         accountList.setAdapter((accountArrayAdapter));
     }
-    private void ShowAllAccountsOnListView(DataBaseHelper dataBaseHelper3) {
-        allAccountArrayAdapter = new ArrayAdapter<>(Main_Page.this, android.R.layout.simple_list_item_1, dataBaseHelper3.getAllAccounts());
-        accountList.setAdapter((allAccountArrayAdapter));
-    }
+
     public void openETransfer() {
         Intent intent = new Intent(this, SendEtransfer.class);
         startActivity(intent);
@@ -128,7 +124,11 @@ public class Main_Page extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.first_menu, menu);
+        if (dataBaseHelper.getActiveUser().equals("Admin")){
+            getMenuInflater().inflate(R.menu.admin_menu, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.first_menu, menu);
+        }
         return true;
     }
     public void openNewAccount() {
@@ -150,6 +150,10 @@ public class Main_Page extends AppCompatActivity {
         }
         if (id == R.id.it_log) {
             Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        if (id == R.id.it_adminLog) {
+            Intent intent = new Intent(this, AdminUserLogin.class);
             startActivity(intent);
         }
 
