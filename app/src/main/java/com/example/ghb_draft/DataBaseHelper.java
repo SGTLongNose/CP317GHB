@@ -307,6 +307,7 @@ import java.util.List;
                 }
 
             }
+            //special important line
             ACTIVE_USER = email;
             // close both the cursor and the db when done
             cursor.close();
@@ -414,6 +415,7 @@ import java.util.List;
         public String getActiveUser(){
             return ACTIVE_USER;
         }
+
 
 
 
