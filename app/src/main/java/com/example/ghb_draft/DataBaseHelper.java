@@ -35,7 +35,8 @@ import java.util.List;
         public static final String COL_DEFINITION = "DEFINITION";
 
         public static String ACTIVE_USER = "ACTIVE_USER";
-
+        public static Accounts OUTGOING;
+        public static Accounts RECIEVING;
         public DataBaseHelper(@Nullable Context context) {
 
             super(context, "customer.db", null, 1);
@@ -345,7 +346,25 @@ import java.util.List;
             cursor.close();
             return hasObject;
         }
+        public boolean findStudentAccount(){
+            String query = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " =?";
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(query, new String[] {ACTIVE_USER});
+            boolean hasObject = true;
+            if (cursor.moveToFirst()) {
+                do {
+                    String accountType = cursor.getString(2);
+                    if (accountType.equals("One Card")){
+                        hasObject = false;
+                    }else{
+                    }
 
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return hasObject;
+        }
 
         public ArrayList<String> grabInfo() {
 
@@ -431,4 +450,21 @@ import java.util.List;
         public static void setActiveUser(String activeUser) {
             ACTIVE_USER = activeUser;
         }
+
+        public static Accounts getOUTGOING() {
+            return OUTGOING;
+        }
+
+        public static void setOUTGOING(Accounts account) {
+            OUTGOING = account;
+        }
+
+        public static Accounts getRECIEVING() {
+            return RECIEVING;
+        }
+
+        public static void setRECIEVING(Accounts account) {
+            RECIEVING = account;
+        }
+
     }

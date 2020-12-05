@@ -56,10 +56,16 @@ public class AddNewAccounts extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    int st_num = Integer.parseInt(student_num.getText().toString());
-                    Accounts account = new Accounts(dataBaseHelper.getActiveUser(), (float) 0, "One Card", st_num, -1);
-                    dataBaseHelper.addAccount(account);
-                    openHomePage();
+                    if (dataBaseHelper.findStudentAccount()) {
+                        int st_num = Integer.parseInt(student_num.getText().toString());
+                        Accounts account = new Accounts(dataBaseHelper.getActiveUser(), (float) 0, "One Card", st_num, -1);
+                        dataBaseHelper.addAccount(account);
+                        openHomePage();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "One Card Account Already Exists", Toast.LENGTH_LONG).show();
+                        student_num.setText("");
+                        student_num.setVisibility(View.INVISIBLE);
+                    }
                 } catch (NumberFormatException e){
                     Toast.makeText(getApplicationContext(), "Invalid Student Number", Toast.LENGTH_LONG).show();
                     student_num.setText("");
