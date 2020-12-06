@@ -34,6 +34,7 @@ import java.util.List;
         public static final String COL_WORD = "WORD";
         public static final String COL_DEFINITION = "DEFINITION";
 
+        public static boolean ACTIVE_ADMIN = false;
         public static String ACTIVE_USER = "ACTIVE_USER";
         public static Accounts OUTGOING;
         public static Accounts RECIEVING;
@@ -297,11 +298,41 @@ import java.util.List;
             db.close();
             return returnList;
         }
+        public List<Accounts> getOutgoingAccounts() {
+            List<Accounts> returnList = new ArrayList<>();
+            SQLiteDatabase db = this.getReadableDatabase();
+            String queryString = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
+            Cursor cursor = db.rawQuery(queryString, new String[] {ACTIVE_USER});
+            if (cursor.moveToFirst()) {
+                do {
+                    String accountType = cursor.getString(2);
+                    if (!(accountType.equals("One Card"))) {
+                        String accountEmail = cursor.getString(0);
+                        Float accountBalance = cursor.getFloat(1);
+                        Integer studentNumber = cursor.getInt(3);
+                        Integer accountId = cursor.getInt(4);
+                        Accounts account = new Accounts(accountEmail, accountBalance, accountType, studentNumber, accountId);
+                        returnList.add(account);
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return returnList;
+        }
 
-        public boolean isAdmin (String email) {
+        public void isAdmin (String email) {
             ACTIVE_USER = email;
 
-            return true;
+            if (email.equals("Admin")){
+                ACTIVE_ADMIN = true;
+            } else {
+                ACTIVE_ADMIN = false;
+            }
+        }
+
+        public boolean Admin() {
+            return ACTIVE_ADMIN;
         }
 
         public boolean isValidEmailAndPassword(String email, String password) {

@@ -44,7 +44,7 @@ public class SendFunds extends AppCompatActivity {
 
     }
     private void ShowAccountsOnListView(DataBaseHelper dataBaseHelper2) {
-        accountArrayAdapter = new ArrayAdapter<>(SendFunds.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getAccounts());
+        accountArrayAdapter = new ArrayAdapter<>(SendFunds.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getOutgoingAccounts());
         lv_outgoingAccounts.setAdapter((accountArrayAdapter));
     }
     public void openHomePage() {

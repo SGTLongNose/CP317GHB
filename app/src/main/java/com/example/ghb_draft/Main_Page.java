@@ -124,7 +124,7 @@ public class Main_Page extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (dataBaseHelper.getActiveUser().equals("Admin")){
+        if (dataBaseHelper.Admin() == true){
             getMenuInflater().inflate(R.menu.admin_menu, menu);
         } else {
             getMenuInflater().inflate(R.menu.first_menu, menu);

@@ -56,7 +56,8 @@ public class RecieveFunds extends AppCompatActivity {
         startActivity(intent);
     }
     public void openConfirmSendFunds(){
-
+        Intent intent = new Intent(this, RecieveFunds.class);
+        startActivity(intent);
     }
 }
 
