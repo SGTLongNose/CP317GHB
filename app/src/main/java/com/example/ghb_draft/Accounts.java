@@ -3,13 +3,15 @@ package com.example.ghb_draft;
 public class Accounts {
     private String email, type;
     private Float balance;
-    private Integer studentNumber;
+    private Integer studentNumber, id;
 
-    public Accounts(String email, Float balance, String type, Integer studentNumber){
+
+    public Accounts(String email, Float balance, String type, Integer studentNumber, Integer id){
         this.email = email;
         this.balance = balance;
         this.type = type;
         this.studentNumber = studentNumber;
+        this.id = id;
     }
     public Accounts() {
 
@@ -17,8 +19,14 @@ public class Accounts {
 
     @Override
     public String toString() {
-        return "Account: " + type +
-                ", Balance = " + balance;
+        if (studentNumber.equals(0)) {
+            return "Account: " + type +
+                    ", Balance = " + balance;
+        } else{
+            return "Account: " + type +
+                    ", Balance = " + balance +
+                    "\nStudent Number: " + studentNumber;
+        }
     }
 
     public String getEmail() {
@@ -51,5 +59,13 @@ public class Accounts {
 
     public void setStudentNumber(Integer studentNumber) {
         this.studentNumber = studentNumber;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

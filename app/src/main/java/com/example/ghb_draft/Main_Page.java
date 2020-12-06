@@ -6,12 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.accounts.Account;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +20,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main_Page extends AppCompatActivity {
@@ -42,8 +41,16 @@ public class Main_Page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__page);
 
-        accountList = (ListView) findViewById(R.id.lv_accountList);
-
+        accountList = (ListView)findViewById (R.id.lv_accountList);
+        accountList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Accounts clickedAccount = (Accounts) parent.getItemAtPosition(position);
+                dataBaseHelper.deleteAccount(clickedAccount);
+                ShowAccountsOnListView(dataBaseHelper);
+                Toast.makeText(Main_Page.this, "Deleted" + clickedAccount.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
         dataBaseHelper = new DataBaseHelper(Main_Page.this);
 
         if (dataBaseHelper.getActiveUser().equals("Admin")) {
@@ -94,6 +101,7 @@ public class Main_Page extends AppCompatActivity {
         accountArrayAdapter = new ArrayAdapter<>(Main_Page.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getAccounts());
         accountList.setAdapter((accountArrayAdapter));
     }
+
     public void openETransfer() {
         Intent intent = new Intent(this, SendEtransfer.class);
         startActivity(intent);
@@ -116,12 +124,11 @@ public class Main_Page extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (dataBaseHelper.getActiveUser().equals("Admin")) {
+        if (dataBaseHelper.getActiveUser().equals("Admin")){
             getMenuInflater().inflate(R.menu.admin_menu, menu);
         } else {
             getMenuInflater().inflate(R.menu.first_menu, menu);
         }
-
         return true;
     }
     public void openNewAccount() {

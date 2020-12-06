@@ -20,6 +20,7 @@ import java.util.List;
         public static final String ACCOUNT_EMAIL = "ACCOUNT_EMAIL";
         public static final String ACCOUNT_BALANCE = "ACCOUNT_BALANCE";
         public static final String ACCOUNT_TYPE = "ACCOUNT_TYPE";
+        public static final String ACCOUNT_ID = "ACOUNT_ID";
         public static final String STUDENT_NUMBER = "STUDENT_NUMBER";
         public static final String CUSTOMER_TABLE = "CUSTOMER_TABLE";
         public static final String COLUMN_CUSTOMER_NAME = "CUSTOMER_NAME";
@@ -34,7 +35,8 @@ import java.util.List;
         public static final String COL_DEFINITION = "DEFINITION";
 
         public static String ACTIVE_USER = "ACTIVE_USER";
-
+        public static Accounts OUTGOING;
+        public static Accounts RECIEVING;
         public DataBaseHelper(@Nullable Context context) {
 
             super(context, "customer.db", null, 1);
@@ -45,7 +47,7 @@ import java.util.List;
         public void onCreate(SQLiteDatabase db) {
             String createTableStatement = "CREATE TABLE " + CUSTOMER_TABLE + " (" + USER_ID + " TEXT, " + COLUMN_CUSTOMER_NAME + " TEXT, " + COLUMN_CUSTOMER_EMAIL + " TEXT)";
             String createTableStatement2 = "CREATE TABLE " + USER_TABLE + " (" + USER_FULL_NAME + " TEXT, " + USER_PHONE_NUMBER + " TEXT, " + USER_EMAIL + " TEXT, " + USER_PASSWORD + " TEXT)";
-            String createTableStatement3 = "CREATE TABLE " + ACCOUNTS_TABLE + " (" + ACCOUNT_EMAIL + " TEXT, " + ACCOUNT_BALANCE + " FLOAT, " + ACCOUNT_TYPE + " TEXT, " + STUDENT_NUMBER + " INTEGER)";
+            String createTableStatement3 = "CREATE TABLE " + ACCOUNTS_TABLE + " (" + ACCOUNT_EMAIL + " TEXT, " + ACCOUNT_BALANCE + " FLOAT, " + ACCOUNT_TYPE + " TEXT, " + STUDENT_NUMBER + " INTEGER, " + ACCOUNT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT)";
 
             db.execSQL(createTableStatement);
             db.execSQL(createTableStatement2);
@@ -216,8 +218,8 @@ import java.util.List;
             // if it is not found, return false
 
             SQLiteDatabase db = this.getWritableDatabase();
-            String queryString = "DELETE FROM " + CUSTOMER_TABLE + " WHERE " + USER_ID + " = " + customerModel.getUser();
-            Cursor cursor =  db.rawQuery(queryString, null);
+            String queryString = "DELETE FROM " + CUSTOMER_TABLE + " WHERE " + COLUMN_CUSTOMER_EMAIL + " = ?";
+            Cursor cursor =  db.rawQuery(queryString, new String[]{customerModel.getEmail()});
 
             if (cursor.moveToFirst()){
                 return true;
@@ -225,6 +227,20 @@ import java.util.List;
             else{
                 return false;
             }
+        }
+        public boolean deleteAccount(Accounts account){
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            String queryString = "DELETE FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_ID + " = ?";
+            Cursor cursor =  db.rawQuery(queryString, new String[]{account.getId().toString()});
+
+            if (cursor.moveToFirst()){
+                return true;
+            }
+            else{
+                return false;
+            }
+
         }
 
 
@@ -271,7 +287,8 @@ import java.util.List;
                     Float accountBalance = cursor.getFloat(1);
                     String accountType = cursor.getString(2);
                     Integer studentNumber = cursor.getInt(3);
-                    Accounts account = new Accounts(accountEmail, accountBalance, accountType, studentNumber);
+                    Integer accountId = cursor.getInt(4);
+                    Accounts account = new Accounts(accountEmail, accountBalance, accountType, studentNumber, accountId);
                     returnList.add(account);
 
                 } while (cursor.moveToNext());
@@ -314,13 +331,10 @@ import java.util.List;
             db.close();
             return hasObject;
         }
-
         public boolean isValidEmail(String email) {
             String query = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
             SQLiteDatabase db = this.getReadableDatabase();
-
             Cursor cursor = db.rawQuery(query, new String[] {email});
-
             boolean hasObject = false;
             if (cursor.moveToNext()) {
                 hasObject = true;
@@ -332,7 +346,25 @@ import java.util.List;
             cursor.close();
             return hasObject;
         }
+        public boolean findStudentAccount(){
+            String query = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " =?";
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(query, new String[] {ACTIVE_USER});
+            boolean hasObject = true;
+            if (cursor.moveToFirst()) {
+                do {
+                    String accountType = cursor.getString(2);
+                    if (accountType.equals("One Card")){
+                        hasObject = false;
+                    }else{
+                    }
 
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return hasObject;
+        }
 
         public ArrayList<String> grabInfo() {
 
@@ -415,7 +447,24 @@ import java.util.List;
             return ACTIVE_USER;
         }
 
+        public static void setActiveUser(String activeUser) {
+            ACTIVE_USER = activeUser;
+        }
 
+        public static Accounts getOUTGOING() {
+            return OUTGOING;
+        }
 
+        public static void setOUTGOING(Accounts account) {
+            OUTGOING = account;
+        }
+
+        public static Accounts getRECIEVING() {
+            return RECIEVING;
+        }
+
+        public static void setRECIEVING(Accounts account) {
+            RECIEVING = account;
+        }
 
     }
