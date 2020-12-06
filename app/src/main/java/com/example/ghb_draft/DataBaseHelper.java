@@ -20,7 +20,7 @@ import java.util.List;
         public static final String ACCOUNT_EMAIL = "ACCOUNT_EMAIL";
         public static final String ACCOUNT_BALANCE = "ACCOUNT_BALANCE";
         public static final String ACCOUNT_TYPE = "ACCOUNT_TYPE";
-        public static final String ACCOUNT_ID = "ACOUNT_ID";
+        public static final String ACCOUNT_ID = "ACCOUNT_ID";
         public static final String STUDENT_NUMBER = "STUDENT_NUMBER";
         public static final String CUSTOMER_TABLE = "CUSTOMER_TABLE";
         public static final String COLUMN_CUSTOMER_NAME = "CUSTOMER_NAME";
@@ -320,6 +320,16 @@ import java.util.List;
             db.close();
             return returnList;
         }
+        public List<Accounts> getSelectedAccounts() {
+            List<Accounts> returnList = new ArrayList<>();
+            SQLiteDatabase db = this.getReadableDatabase();
+            Accounts outgoing = getOUTGOING();
+            Accounts receiving = getRECIEVING();
+            returnList.add(outgoing);
+            returnList.add(receiving);
+            db.close();
+            return returnList;
+        }
 
         public void isAdmin (String email) {
             ACTIVE_USER = email;
@@ -441,6 +451,26 @@ import java.util.List;
 
             return true;
 
+        }
+        public boolean sendMoney(Accounts outgoing, Accounts receiving, float amount){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            float outgoingBalance = outgoing.getBalance();
+            outgoingBalance -= amount;
+            if (outgoingBalance >= 0) {
+                int outgoingId = outgoing.getId();
+                cv.put(ACCOUNT_BALANCE, outgoingBalance);
+                db.update(ACCOUNTS_TABLE, cv, "ACCOUNT_ID = " + outgoingId, null);
+                ContentValues cv2 = new ContentValues();
+                float reveivingBalance = receiving.getBalance();
+                reveivingBalance += amount;
+                int receivingId = receiving.getId();
+                cv2.put(ACCOUNT_BALANCE, reveivingBalance);
+                db.update(ACCOUNTS_TABLE, cv2, "ACCOUNT_ID = " + receivingId, null);
+                return true;
+            } else {
+                return false;
+            }
         }
 
         public boolean sendEtransfer(String user, String rec, int amount) {

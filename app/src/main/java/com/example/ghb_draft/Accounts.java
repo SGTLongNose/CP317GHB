@@ -21,10 +21,10 @@ public class Accounts {
     public String toString() {
         if (studentNumber.equals(0)) {
             return "Account: " + type +
-                    ", Balance = " + balance;
+                    ", Balance = $" + balance;
         } else{
             return "Account: " + type +
-                    ", Balance = " + balance +
+                    ", Balance = $" + balance +
                     "\nStudent Number: " + studentNumber;
         }
     }

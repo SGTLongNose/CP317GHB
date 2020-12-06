@@ -19,6 +19,7 @@
         <activity android:name=".SendFunds" />
         <activity android:name=".Main_Page" />
         <activity android:name=".RecieveFunds" />
+        <activity android:name=".ConfirmSendFunds" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

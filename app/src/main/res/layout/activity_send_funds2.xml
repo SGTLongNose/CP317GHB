@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/img_sendfunds" />
 
     <ListView
-        android:id="@+id/lv_receivingAccounts"
+        android:id="@+id/lv_selectedAccounts"
         android:layout_width="306dp"
         android:layout_height="376dp"
         app:layout_constraintBottom_toBottomOf="parent"
