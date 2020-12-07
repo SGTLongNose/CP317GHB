@@ -29,7 +29,7 @@ public class SendFunds extends AppCompatActivity {
                 openHomePage();
             }
         });
-        lv_outgoingAccounts = (ListView)findViewById (R.id.lv_receivingAccounts);
+        lv_outgoingAccounts = (ListView)findViewById (R.id.lv_selectedAccounts);
         lv_outgoingAccounts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -44,7 +44,7 @@ public class SendFunds extends AppCompatActivity {
 
     }
     private void ShowAccountsOnListView(DataBaseHelper dataBaseHelper2) {
-        accountArrayAdapter = new ArrayAdapter<>(SendFunds.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getAccounts());
+        accountArrayAdapter = new ArrayAdapter<>(SendFunds.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getOutgoingAccounts());
         lv_outgoingAccounts.setAdapter((accountArrayAdapter));
     }
     public void openHomePage() {

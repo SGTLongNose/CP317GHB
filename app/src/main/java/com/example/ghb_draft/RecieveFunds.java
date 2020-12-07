@@ -28,7 +28,7 @@ public class RecieveFunds extends AppCompatActivity {
                 openHomePage();
             }
         });
-        lv_receivingAccounts = (ListView) findViewById(R.id.lv_receivingAccounts);
+        lv_receivingAccounts = (ListView) findViewById(R.id.lv_selectedAccounts);
         lv_receivingAccounts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -38,6 +38,7 @@ public class RecieveFunds extends AppCompatActivity {
                 } else {
                     DataBaseHelper.setRECIEVING(clickedAccount);
                     Toast.makeText(getApplicationContext(), "Receiving account set", Toast.LENGTH_SHORT).show();
+                    openConfirmSendFunds();
                 }
             }
         });
@@ -56,7 +57,8 @@ public class RecieveFunds extends AppCompatActivity {
         startActivity(intent);
     }
     public void openConfirmSendFunds(){
-
+        Intent intent = new Intent(this, ConfirmSendFunds.class);
+        startActivity(intent);
     }
 }
 
