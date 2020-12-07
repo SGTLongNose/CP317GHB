@@ -23,10 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactList extends AppCompatActivity {
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
-    private EditText newcontactpop_firstname, getNewcontactpop_lastname, getNewcontactpop_mobile, getNewcontactpop_email;
-    private Button newcontactpopup_cancel, getNewcontactpopup_save;
     // references to buttons and other controls on the layout
     // references to buttons and other controls on the layout
     Button btn_add;
@@ -104,52 +100,7 @@ public class ContactList extends AppCompatActivity {
         customerArrayAdapter = new ArrayAdapter<>(ContactList.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getEveryone());
         lv_customerList.setAdapter((customerArrayAdapter));
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.second_menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.menu_addContact) {
-            createNewContactDialog();
-        }
-
-
-        return super.onOptionsItemSelected(item);
-
-    }
-
-    public void createNewContactDialog() {
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View contactPopupView = getLayoutInflater().inflate(R.layout.popup, null);
-        newcontactpop_firstname = (EditText) contactPopupView.findViewById(R.id.newcontactpopup_firstname);
-        getNewcontactpop_lastname = (EditText) contactPopupView.findViewById(R.id.newcontactpopup_lastname);
-        getNewcontactpop_mobile = (EditText) contactPopupView.findViewById(R.id.newcontactpopup_mobile);
-        getNewcontactpop_email = (EditText) contactPopupView.findViewById(R.id.newcontactpopup_email);
-
-        getNewcontactpopup_save = (Button) contactPopupView.findViewById(R.id.saveButton);
-        newcontactpopup_cancel = (Button) contactPopupView.findViewById(R.id.cancelButton);
-
-        dialogBuilder.setView(contactPopupView);
-        dialog = dialogBuilder.create();
-        dialog.show();
-
-        getNewcontactpopup_save.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
-
-            }
-        });
-        newcontactpopup_cancel.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
-                dialog.dismiss();
-            }
-        });
-
-    }
     public void openHomePage() {
         Intent intent = new Intent(this, Main_Page.class);
         startActivity(intent);

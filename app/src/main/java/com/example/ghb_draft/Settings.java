@@ -25,10 +25,11 @@ public class Settings extends AppCompatActivity {
     DataBaseHelper dataBaseHelper;
     private ImageButton btn_home;
     private Button btn_clear, btn_save, btn_delete;
-    private EditText firstName, mobile, email, accountPassword;
+    private EditText firstName, mobile, accountPassword;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private TextView message;
+
     private Button cancel, delete;
 
 
@@ -42,7 +43,6 @@ public class Settings extends AppCompatActivity {
         btn_save = (Button) findViewById(R.id.saveButton);
         firstName = (EditText) findViewById(R.id.settings_firstname);
         mobile = (EditText) findViewById(R.id.settings_mobile);
-        email = (EditText) findViewById(R.id.settings_email);
         accountPassword = (EditText) findViewById(R.id.settings_password);
 
         ArrayList<String> x = dataBaseHelper.grabInfo();
@@ -52,10 +52,9 @@ public class Settings extends AppCompatActivity {
         String mail = x.get(2);
         String pw = x.get(3);
 
-        firstName.setHint("Full Name: " + fName);
-        mobile.setHint("Phone Number: " + phone);
-        email.setHint("Email: " + mail);
-        accountPassword.setHint("Password: " + pw);
+        firstName.setHint("" + fName);
+        mobile.setHint("" + phone);
+        accountPassword.setHint("" + pw);
 
 
         btn_home = (ImageButton) findViewById(R.id.btn_home);
@@ -72,7 +71,6 @@ public class Settings extends AppCompatActivity {
             public void onClick(View v) {
                 firstName.setText("");
                 mobile.setText("");
-                email.setText("");
                 accountPassword.setText("");
             }
         });
@@ -82,13 +80,19 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (firstName.getText().toString().isEmpty() || mobile.getText().toString().isEmpty() || accountPassword.getText().toString().isEmpty()) {
-                    Toast.makeText(Settings.this, "Error changing info. Please fill in all sections.", Toast.LENGTH_SHORT).show();
-                } else {
-                    dataBaseHelper.updateSettings(firstName.getText().toString(), mobile.getText().toString(), accountPassword.getText().toString());
-                    finish();
-                    startActivity(getIntent());
+                if (firstName.getText().toString().isEmpty()) {
+                    firstName.setText(firstName.getHint());
                 }
+                if (mobile.getText().toString().isEmpty()) {
+                    mobile.setText(mobile.getHint());
+                }
+                if (accountPassword.getText().toString().isEmpty()) {
+                    accountPassword.setText(accountPassword.getHint());
+                }
+                dataBaseHelper.updateSettings(firstName.getText().toString(), mobile.getText().toString(), accountPassword.getText().toString());
+                finish();
+                startActivity(getIntent());
+
             }
         });
 

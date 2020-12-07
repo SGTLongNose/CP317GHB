@@ -367,6 +367,7 @@ import java.util.List;
             }
             //special important line
             ACTIVE_USER = email;
+            ACTIVE_ADMIN = false;
             // close both the cursor and the db when done
             cursor.close();
             db.close();
@@ -473,37 +474,6 @@ import java.util.List;
             }
         }
 
-        public boolean sendEtransfer(String user, String rec, int amount) {
-
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues cvUser = new ContentValues();
-            ContentValues cvRec = new ContentValues();
-
-            String userString = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
-            String recString = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
-
-            Cursor cursor = db.rawQuery(userString, new String[]{user});
-            Cursor cursor2 = db.rawQuery(recString, new String[]{rec});
-
-
-            if (cursor.moveToFirst()) {
-                int x = Integer.parseInt(ACCOUNT_BALANCE);
-                int y = x - amount;
-                cvUser.put(ACCOUNT_BALANCE, y);
-            } else {
-                return false;
-            }
-            if (cursor2.moveToFirst()) {
-                int x2 = Integer.parseInt(ACCOUNT_BALANCE);
-                int y2 = x2 + amount;
-                cvRec.put(ACCOUNT_BALANCE, y2);
-            } else {
-                return false;
-            }
-
-
-            return true;
-        }
         public String getActiveUser(){
             return ACTIVE_USER;
         }

@@ -38,23 +38,12 @@ public class MainActivity extends AppCompatActivity {
 
         Attempts.setText("Number of Attempts Remaining: " + String.valueOf(counter));
 
-//        final String[] email = {Name.getText().toString()};
-//        String password = Password.getText().toString();
-
-
-//        Login.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                validate(Name.getText().toString(), Password.getText().toString());
-//            }
-//        });
-
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (Name.getText().toString().equals("Admin") && Password.getText().toString().equals("password")) {
-                    dataBaseHelper.isAdmin(Name.getText().toString());
+                   dataBaseHelper.isAdmin(Name.getText().toString());
                     openAdminMainPage();
                 } else {
                     try {
@@ -65,9 +54,10 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Test2", Password.getText().toString() + "Add ON");
 
                         if (!x) {
-                            Toast.makeText(MainActivity.this, "The combination of Email and Password is not registered in the User DB", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Email or Password is not recognized.", Toast.LENGTH_SHORT).show();
                             counter--;
                             Attempts.setText("Number of Attempts Remaining: " + String.valueOf(counter));
+                            noAttempts();
                         } else {
                             openMainPage();
                         }
@@ -89,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void noAttempts() {
+        if (counter == 0) {
+            Login.setEnabled(false);
+            Toast.makeText(MainActivity.this, "No more attempts. Refresh App or Close App to Try Again.", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void openRegister() {
