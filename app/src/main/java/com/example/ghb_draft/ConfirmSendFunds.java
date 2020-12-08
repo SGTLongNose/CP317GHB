@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,18 +31,18 @@ public class ConfirmSendFunds extends AppCompatActivity {
                 openHomePage();
             }
         });
-        lv_selectedAccounts = (ListView) findViewById(R.id.lv_selectedAccounts);
+        lv_selectedAccounts = (ListView) findViewById(R.id.lv_transferAccounts);
         dataBaseHelper = new DataBaseHelper(ConfirmSendFunds.this);
         ShowSelectedAccountsOnListView(dataBaseHelper);
-        amount = (EditText) findViewById(R.id.et_amount);
-        btn_restart = (Button) findViewById(R.id.btn_restart);
+        amount = (EditText) findViewById(R.id.et_transferAmount);
+        btn_restart = (Button) findViewById(R.id.btn_transferRestart);
         btn_restart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openSendFunds();
             }
         });
-        btn_confirm = (Button) findViewById(R.id.btn_confirm);
+        btn_confirm = (Button) findViewById(R.id.btn_transferSend);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

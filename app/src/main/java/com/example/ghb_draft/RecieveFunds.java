@@ -28,7 +28,7 @@ public class RecieveFunds extends AppCompatActivity {
                 openHomePage();
             }
         });
-        lv_receivingAccounts = (ListView) findViewById(R.id.lv_selectedAccounts);
+        lv_receivingAccounts = (ListView) findViewById(R.id.lv_transferAccounts);
         lv_receivingAccounts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

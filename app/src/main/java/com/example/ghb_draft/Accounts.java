@@ -1,10 +1,13 @@
 package com.example.ghb_draft;
 
+import java.text.DecimalFormat;
+
 public class Accounts {
     private String email, type;
     private Float balance;
     private Integer studentNumber, id;
-
+    DataBaseHelper dataBaseHelper;
+    private static DecimalFormat df = new DecimalFormat("0.00");
 
     public Accounts(String email, Float balance, String type, Integer studentNumber, Integer id){
         this.email = email;
@@ -21,10 +24,10 @@ public class Accounts {
     public String toString() {
         if (studentNumber.equals(0)) {
             return "Account: " + type +
-                    ", Balance = $" + balance;
+                    ", Balance = $" + df.format(balance);
         } else{
             return "Account: " + type +
-                    ", Balance = $" + balance +
+                    ", Balance = $" + df.format(balance) +
                     "\nStudent Number: " + studentNumber;
         }
     }

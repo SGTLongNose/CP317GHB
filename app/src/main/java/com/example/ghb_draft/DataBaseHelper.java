@@ -31,6 +31,10 @@ import java.util.List;
         public static final String USER_PHONE_NUMBER = "USER_PHONE_NUMBER";
         public static final String USER_FULL_NAME = "USER_FULL_NAME";
         public static final String USER_PASSWORD = "USER_PASSWORD";
+        public static final String ETRANSFERS_TABLE = "ETRANSFERS_TABLE";
+        public static final String ETRANSFER_OUTGOING = "ETRANSFER_OUTGOING";
+        public static final String ETRANSFER_RECEIVING = "ETRANSFER_RECEIVING";
+        public static final String ETRANSFER_AMOUNT = "ETRANSFER_AMOUNT";
         public static final String COL_WORD = "WORD";
         public static final String COL_DEFINITION = "DEFINITION";
 
@@ -49,7 +53,8 @@ import java.util.List;
             String createTableStatement = "CREATE TABLE " + CUSTOMER_TABLE + " (" + USER_ID + " TEXT, " + COLUMN_CUSTOMER_NAME + " TEXT, " + COLUMN_CUSTOMER_EMAIL + " TEXT)";
             String createTableStatement2 = "CREATE TABLE " + USER_TABLE + " (" + USER_FULL_NAME + " TEXT, " + USER_PHONE_NUMBER + " TEXT, " + USER_EMAIL + " TEXT, " + USER_PASSWORD + " TEXT)";
             String createTableStatement3 = "CREATE TABLE " + ACCOUNTS_TABLE + " (" + ACCOUNT_EMAIL + " TEXT, " + ACCOUNT_BALANCE + " FLOAT, " + ACCOUNT_TYPE + " TEXT, " + STUDENT_NUMBER + " INTEGER, " + ACCOUNT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT)";
-
+            String createTableStatement4 = "CREATE TABLE " + ETRANSFERS_TABLE + " (" + ETRANSFER_OUTGOING + " TEXT, " + ETRANSFER_RECEIVING + " TEXT, " + ETRANSFER_AMOUNT + " FLOAT)";
+            db.execSQL(createTableStatement4);
             db.execSQL(createTableStatement);
             db.execSQL(createTableStatement2);
             db.execSQL(createTableStatement3);
@@ -197,6 +202,19 @@ import java.util.List;
                 return true;
             }
         }
+        public boolean addEtransfer(Etransfers etransfer) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues cv4 = new ContentValues();
+            cv4.put(ETRANSFER_OUTGOING, etransfer.getOutgoingEmail());
+            cv4.put(ETRANSFER_RECEIVING, etransfer.getReceivingEmail());
+            cv4.put(ETRANSFER_AMOUNT, etransfer.getAmount());
+            long insert = db.insert(ETRANSFERS_TABLE, null, cv4);
+            if (insert == -1){
+                return false;
+            }else{
+                return true;
+            }
+        }
 
         public boolean deleteOne(){
             // find customerModel in the database. If it found, delete it and return true.
@@ -275,13 +293,71 @@ import java.util.List;
             db.close();
             return returnList;
         }
+        public List<Etransfers> getEtransfers1() {
+            List<Etransfers> returnList = new ArrayList<>();
+            SQLiteDatabase db = this.getReadableDatabase();
+            String queryString = "SELECT * FROM " + ETRANSFERS_TABLE + " WHERE " + ETRANSFER_OUTGOING + " = ?";
+            Cursor cursor = db.rawQuery(queryString, new String[] {ACTIVE_USER});
+            if (cursor.moveToFirst()) {
+                do {
+                    String outgoingEmail = cursor.getString(0);
+                    String receivingEmail = cursor.getString(1);
+                    Float transferAmount = cursor.getFloat(2);
+                    Etransfers etransfer = new Etransfers(outgoingEmail, receivingEmail, transferAmount);
+                    returnList.add(etransfer);
 
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return returnList;
+        }
+        public List<Etransfers> getEtransfers2() {
+            List<Etransfers> returnList = new ArrayList<>();
+            SQLiteDatabase db = this.getReadableDatabase();
+            String queryString = "SELECT * FROM " + ETRANSFERS_TABLE + " WHERE " + ETRANSFER_RECEIVING + " = ?";
+            Cursor cursor = db.rawQuery(queryString, new String[] {ACTIVE_USER});
+            if (cursor.moveToFirst()) {
+                do {
+                    String outgoingEmail = cursor.getString(0);
+                    String receivingEmail = cursor.getString(1);
+                    Float transferAmount = cursor.getFloat(2);
+                    Etransfers etransfer = new Etransfers(outgoingEmail, receivingEmail, transferAmount);
+                    returnList.add(etransfer);
+
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return returnList;
+        }
 
         public List<Accounts> getAccounts() {
             List<Accounts> returnList = new ArrayList<>();
             SQLiteDatabase db = this.getReadableDatabase();
             String queryString = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
             Cursor cursor = db.rawQuery(queryString, new String[] {ACTIVE_USER});
+            if (cursor.moveToFirst()) {
+                do {
+                    String accountEmail = cursor.getString(0);
+                    Float accountBalance = cursor.getFloat(1);
+                    String accountType = cursor.getString(2);
+                    Integer studentNumber = cursor.getInt(3);
+                    Integer accountId = cursor.getInt(4);
+                    Accounts account = new Accounts(accountEmail, accountBalance, accountType, studentNumber, accountId);
+                    returnList.add(account);
+
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return returnList;
+        }
+        public List<Accounts> getReceivingAccounts(String email) {
+            List<Accounts> returnList = new ArrayList<>();
+            SQLiteDatabase db = this.getReadableDatabase();
+            String queryString = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " = ?";
+            Cursor cursor = db.rawQuery(queryString, new String[] {email});
             if (cursor.moveToFirst()) {
                 do {
                     String accountEmail = cursor.getString(0);

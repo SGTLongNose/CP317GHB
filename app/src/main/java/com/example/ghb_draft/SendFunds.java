@@ -29,7 +29,7 @@ public class SendFunds extends AppCompatActivity {
                 openHomePage();
             }
         });
-        lv_outgoingAccounts = (ListView)findViewById (R.id.lv_selectedAccounts);
+        lv_outgoingAccounts = (ListView)findViewById (R.id.lv_transferAccounts);
         lv_outgoingAccounts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -5,15 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class SendEtransfer extends AppCompatActivity {
     private ImageButton btn_home;
-    private Button btn_sendTrans, btn_clearTrans;
-    private EditText recipientAccount, userAccount, transAmount;
+    private ListView lv_outgoingTransfer;
+    ArrayAdapter accountArrayAdapter;
     DataBaseHelper dataBaseHelper;
 
     @Override
@@ -21,9 +22,7 @@ public class SendEtransfer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_etransfer);
 
-        recipientAccount = (EditText) findViewById(R.id.sendEtransfer_To);
-        userAccount = (EditText) findViewById(R.id.sendEtransfer_WhichAccount);
-        transAmount = (EditText) findViewById(R.id.sendEtransfer_Amount);
+        lv_outgoingTransfer = (ListView) findViewById(R.id.lv_receivingEtransfer);
 
         btn_home = (ImageButton) findViewById(R.id.btn_home);
         btn_home.setOnClickListener(new View.OnClickListener() {
@@ -32,37 +31,30 @@ public class SendEtransfer extends AppCompatActivity {
                 openHomePage();
             }
         });
-
-        btn_clearTrans = (Button) findViewById(R.id.btn_clearTrans);
-        btn_clearTrans.setOnClickListener(new View.OnClickListener() {
+        lv_outgoingTransfer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                recipientAccount.setText("");
-                userAccount.setText("");
-                transAmount.setText("");
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Accounts clickedAccount = (Accounts) parent.getItemAtPosition(position);
+                DataBaseHelper.setOUTGOING(clickedAccount);
+                Toast.makeText(getApplicationContext(), "Outgoing account set", Toast.LENGTH_SHORT).show();
+                openReceiveTransfer();
             }
         });
-
-        btn_sendTrans = (Button) findViewById(R.id.btn_sendTrans);
-        btn_sendTrans.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (userAccount.getText().toString().isEmpty() || recipientAccount.getText().toString().isEmpty() || transAmount.getText().toString().isEmpty()) {
-                    Toast.makeText(SendEtransfer.this, "Error changing info. Please fill in all sections.", Toast.LENGTH_SHORT).show();
-                } else {
-                  //  dataBaseHelper.sendEtransfer(userAccount.getText().toString(), recipientAccount.getText().toString(), Float.parseFloat(transAmount.getText().toString()));
-                    finish();
-                    openHomePage();
-                }
-            }
-        });
-
+        dataBaseHelper = new DataBaseHelper(SendEtransfer.this);
+        ShowAccountsOnListView(dataBaseHelper);
 
 
     }
-
+    private void ShowAccountsOnListView(DataBaseHelper dataBaseHelper2) {
+        accountArrayAdapter = new ArrayAdapter<>(SendEtransfer.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getOutgoingAccounts());
+        lv_outgoingTransfer.setAdapter((accountArrayAdapter));
+    }
     public void openHomePage() {
         Intent intent = new Intent(this, Main_Page.class);
+        startActivity(intent);
+    }
+    public void openReceiveTransfer(){
+        Intent intent = new Intent(this, ReceiveEtransfer.class);
         startActivity(intent);
     }
 }
