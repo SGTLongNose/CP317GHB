@@ -1,5 +1,5 @@
 package com.example.ghb_draft;
-
+// Contact list customer model class
 public class CustomerModel {
     private String name, email, user;
 

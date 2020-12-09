@@ -12,7 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+// Select which account to send e-transfer to, by entering email of user and then selecting bank account from list
 public class ReceiveEtransfer extends AppCompatActivity {
     private ImageButton btn_home;
     private Button btn_load;

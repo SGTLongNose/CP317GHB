@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
-
+// Final send funds page
 public class ConfirmSendFunds extends AppCompatActivity {
     private ImageButton btn_home;
     private Button btn_restart, btn_confirm;
@@ -42,6 +42,7 @@ public class ConfirmSendFunds extends AppCompatActivity {
                 openSendFunds();
             }
         });
+        // Send button calls required functions to send e-transfer
         btn_confirm = (Button) findViewById(R.id.btn_transferSend);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override

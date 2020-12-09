@@ -25,6 +25,7 @@ public class AddNewAccounts extends AppCompatActivity {
         savings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // A new savings account with 0$ gets added the the users account and will be added to the main page
                 Accounts account = new Accounts(dataBaseHelper.getActiveUser(), (float) 0, "Savings", null, -1);
                 dataBaseHelper.addAccount(account);
                 openHomePage();
@@ -34,6 +35,7 @@ public class AddNewAccounts extends AppCompatActivity {
         credit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // A new credit account with 0$ gets added the the users account and will be added to the main page
                 Accounts account = new Accounts(dataBaseHelper.getActiveUser(), (float) 0, "Credit", null, -1);
                 dataBaseHelper.addAccount(account);
                 openHomePage();
@@ -41,6 +43,7 @@ public class AddNewAccounts extends AppCompatActivity {
         });
         student = (Button) findViewById(R.id.btn_student);
         student.setOnClickListener(new View.OnClickListener() {
+            // When this button is selected the student number text edit will become visible
             @Override
             public void onClick(View v) {
                 student_num.setVisibility(View.VISIBLE);
@@ -53,6 +56,8 @@ public class AddNewAccounts extends AppCompatActivity {
             }
         });
         save.setOnClickListener(new View.OnClickListener() {
+            // When the user clicks the save button it will check with the database to check if the user already has a one card account, if they do it will tell them,
+            // if they do not have an account, one will be added to the user's account with their student number
             @Override
             public void onClick(View v) {
                 try {

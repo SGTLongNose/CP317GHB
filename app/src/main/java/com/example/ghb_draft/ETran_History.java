@@ -30,6 +30,8 @@ public class ETran_History extends AppCompatActivity {
         });
         lv_etransferHistory = (ListView) findViewById(R.id.lv_etransferHistory);
         lv_etransferHistoryReceived = (ListView) findViewById(R.id.lv_etransfersReceived);
+
+        // Calls methods that displays the received and outgoing transfers
         ShowEtransfersOnListView(dataBaseHelper);
         ShowEtransfers2OnListView(dataBaseHelper);
     }
@@ -38,10 +40,12 @@ public class ETran_History extends AppCompatActivity {
         Intent intent = new Intent(this, Main_Page.class);
         startActivity(intent);
     }
+    // Gets the etransfers that the user sent
     private void ShowEtransfersOnListView(DataBaseHelper dataBaseHelper2) {
         accountArrayAdapter = new ArrayAdapter<>(ETran_History.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getEtransfers1());
         lv_etransferHistory.setAdapter((accountArrayAdapter));
     }
+    // Getrs the etransfers that the user received
     private void ShowEtransfers2OnListView(DataBaseHelper dataBaseHelper2) {
         accountArrayAdapter = new ArrayAdapter<>(ETran_History.this, android.R.layout.simple_list_item_1, dataBaseHelper2.getEtransfers2());
         lv_etransferHistoryReceived.setAdapter((accountArrayAdapter));

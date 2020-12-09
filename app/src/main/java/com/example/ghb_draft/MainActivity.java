@@ -38,33 +38,37 @@ public class MainActivity extends AppCompatActivity {
 
         Attempts.setText("Number of Attempts Remaining: " + String.valueOf(counter));
 
+        // When the user clicks the login button this onCLickListener gets called
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                // This is to check when an admin is logging in, if the if is true then it sets isAdmin to true telling the system a admin is using it
+                // Else, it checks for a user to login in
                 if (Name.getText().toString().equals("Admin") && Password.getText().toString().equals("password")) {
+                    // calls the database function isAdmin
                    dataBaseHelper.isAdmin(Name.getText().toString());
-                    openAdminMainPage();
+                   // Opens the Admin main page rather the the user main page
+                   openAdminMainPage();
                 } else {
                     try {
-                        Log.d("Test", "------------------------------------------------------------");
+                        // Stores a true/false to the variable x, by calling the function in the database to see if this email and password exists in the database
                         boolean x = dataBaseHelper.isValidEmailAndPassword(Name.getText().toString(), Password.getText().toString());
-                        Log.d("Test", "------------------------------------------------------------");
-                        Log.d("Test1", Name.getText().toString() + "Add ON");
-                        Log.d("Test2", Password.getText().toString() + "Add ON");
 
+                        // If the user fails to enter the right information, a counter decreases whioh is the amount of attempts the user has left to enter their information
                         if (!x) {
                             Toast.makeText(MainActivity.this, "Email or Password is not recognized.", Toast.LENGTH_SHORT).show();
                             counter--;
                             Attempts.setText("Number of Attempts Remaining: " + String.valueOf(counter));
+                            // When this method is called, it is checking ig the amount of attempts left is equal to zero
                             noAttempts();
                         } else {
+                            // If the user enters the correct information to enter their account they will be taken to the main page
                             openMainPage();
                         }
 
                     } catch (Exception e) {
                         Toast.makeText(MainActivity.this, "Error with registration", Toast.LENGTH_SHORT).show();
-                        Log.d("1", e.getMessage());
                     }
                 }
 
@@ -72,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        // If the register button is selected then it will take the user to the register form
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // When this method is called, it will check if the counter is equal to 0, if it is, then the login button will get disabled so that the user can not login in anymore
     public void noAttempts() {
         if (counter == 0) {
             Login.setEnabled(false);

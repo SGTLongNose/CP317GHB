@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
-
+// Send e-transfer page where user selects which bank account to send money from
 public class SendEtransfer extends AppCompatActivity {
     private ImageButton btn_home;
     private ListView lv_outgoingTransfer;

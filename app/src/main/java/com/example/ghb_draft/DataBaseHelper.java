@@ -15,30 +15,33 @@ import java.util.ArrayList;
 import java.util.List;
 
     public class DataBaseHelper extends SQLiteOpenHelper {
-
+        // Accounts table in SQLite Database, column names
         public static final String ACCOUNTS_TABLE = "ACCOUNTS_TABLE";
         public static final String ACCOUNT_EMAIL = "ACCOUNT_EMAIL";
         public static final String ACCOUNT_BALANCE = "ACCOUNT_BALANCE";
         public static final String ACCOUNT_TYPE = "ACCOUNT_TYPE";
         public static final String ACCOUNT_ID = "ACCOUNT_ID";
         public static final String STUDENT_NUMBER = "STUDENT_NUMBER";
+        // Customer table in SQLite Database, column names
         public static final String CUSTOMER_TABLE = "CUSTOMER_TABLE";
         public static final String COLUMN_CUSTOMER_NAME = "CUSTOMER_NAME";
         public static final String COLUMN_CUSTOMER_EMAIL = "CUSTOMER_EMAIL";
-        public static final String USER_ID = "USER_ID";
+        // User table in SQLite Database, column names
         public static final String USER_TABLE = "USER_TABLE";
+        public static final String USER_ID = "USER_ID";
         public static final String USER_EMAIL = "USER_EMAIL";
         public static final String USER_PHONE_NUMBER = "USER_PHONE_NUMBER";
         public static final String USER_FULL_NAME = "USER_FULL_NAME";
         public static final String USER_PASSWORD = "USER_PASSWORD";
+        // E-transfers table in SQLite Database, column names
         public static final String ETRANSFERS_TABLE = "ETRANSFERS_TABLE";
         public static final String ETRANSFER_OUTGOING = "ETRANSFER_OUTGOING";
         public static final String ETRANSFER_RECEIVING = "ETRANSFER_RECEIVING";
         public static final String ETRANSFER_AMOUNT = "ETRANSFER_AMOUNT";
-        public static final String COL_WORD = "WORD";
-        public static final String COL_DEFINITION = "DEFINITION";
 
+        // Active admin identifier defaulted to false
         public static boolean ACTIVE_ADMIN = false;
+        // Initializing active user, outgoing and receiving accounts for further functions
         public static String ACTIVE_USER = "ACTIVE_USER";
         public static Accounts OUTGOING;
         public static Accounts RECIEVING;
@@ -47,9 +50,10 @@ import java.util.List;
             super(context, "customer.db", null, 1);
         }
 
-        // this is called the first time a database is accessed. There should be code in here to create a new database.
+        // this is called the first time a database is accessed.
         @Override
         public void onCreate(SQLiteDatabase db) {
+            // Creation of class tables in SQLite Database
             String createTableStatement = "CREATE TABLE " + CUSTOMER_TABLE + " (" + USER_ID + " TEXT, " + COLUMN_CUSTOMER_NAME + " TEXT, " + COLUMN_CUSTOMER_EMAIL + " TEXT)";
             String createTableStatement2 = "CREATE TABLE " + USER_TABLE + " (" + USER_FULL_NAME + " TEXT, " + USER_PHONE_NUMBER + " TEXT, " + USER_EMAIL + " TEXT, " + USER_PASSWORD + " TEXT)";
             String createTableStatement3 = "CREATE TABLE " + ACCOUNTS_TABLE + " (" + ACCOUNT_EMAIL + " TEXT, " + ACCOUNT_BALANCE + " FLOAT, " + ACCOUNT_TYPE + " TEXT, " + STUDENT_NUMBER + " INTEGER, " + ACCOUNT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT)";
@@ -60,26 +64,12 @@ import java.util.List;
             db.execSQL(createTableStatement3);
         }
 
-        // this is called if the database version number changes. It prevents previous users apps from breaking when you change the database design
+        // this is called if the database version number changes.
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         }
-
-        public boolean addOneCard(int ID) {
-
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues cv = new ContentValues();
-
-            cv.put(STUDENT_NUMBER, ID);
-
-            db.update(ACCOUNTS_TABLE, cv, "ACCOUNT_EMAIL = ?", new String[] {ACTIVE_USER});
-
-
-            return true;
-
-        }
-
+        // Add contact to contacts table on database
         public boolean addOne(CustomerModel customerModel){
 
             SQLiteDatabase db = this.getWritableDatabase();
@@ -100,28 +90,7 @@ import java.util.List;
 
 
         }
-        public boolean addOne(Accounts account){
-
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues cv = new ContentValues();
-
-            cv.put(ACCOUNT_EMAIL, account.getEmail());
-            cv.put(ACCOUNT_BALANCE, account.getBalance());
-            cv.put(ACCOUNT_TYPE, account.getType());
-            cv.put(STUDENT_NUMBER, account.getStudentNumber());
-
-
-            long insert = db.insert(ACCOUNTS_TABLE, null, cv);
-
-            if (insert == -1){
-                return false;
-            } else {
-                return true;
-            }
-
-
-        }
-
+        // Checks if email exists in the database users table
         public boolean isEmail(String email) {
             SQLiteDatabase db = getWritableDatabase();
             String selectString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
@@ -144,31 +113,7 @@ import java.util.List;
 
 
         }
-        public boolean isPassword(String password) {
-            SQLiteDatabase db = getWritableDatabase();
-            String selectString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_PASSWORD + " = ?";
-            Cursor cursor = db.rawQuery(selectString, new String[] {password});
-
-            boolean hasObject = false;
-            if (cursor.moveToFirst()) {
-                hasObject = true;
-
-
-                int count = 0;
-                while (cursor.moveToNext()) {
-                    count++;
-                }
-                Log.d(null, String.format("%d records found", count));
-
-
-            }
-            cursor.close();
-            db.close();
-            return  hasObject;
-
-
-        }
-
+        // Adds new registered user to the database user table
         public boolean addUser(UserModel userModel) {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues cv2 = new ContentValues();
@@ -187,7 +132,7 @@ import java.util.List;
                 return true;
             }
         }
-
+        // Adds new banking account to the database accounts table
         public boolean addAccount(Accounts account) {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues cv3 = new ContentValues();
@@ -202,6 +147,7 @@ import java.util.List;
                 return true;
             }
         }
+        // Adds new e-transfer class to the database e-transfers table
         public boolean addEtransfer(Etransfers etransfer) {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues cv4 = new ContentValues();
@@ -215,7 +161,7 @@ import java.util.List;
                 return true;
             }
         }
-
+        // Deletes the active user's account from the database user table
         public boolean deleteOne(){
             // find customerModel in the database. If it found, delete it and return true.
             // if it is not found, return false
@@ -231,7 +177,7 @@ import java.util.List;
                 return false;
             }
         }
-
+        // Deletes a selected contact from the customer table
         public boolean deleteOne(CustomerModel customerModel){
             // find customerModel in the database. If it found, delete it and return true.
             // if it is not found, return false
@@ -247,6 +193,7 @@ import java.util.List;
                 return false;
             }
         }
+        // Deletes a selected banking account from the database accounts table
         public boolean deleteAccount(Accounts account){
 
             SQLiteDatabase db = this.getWritableDatabase();
@@ -262,7 +209,7 @@ import java.util.List;
 
         }
 
-
+        // Gets all contacts with the ID matching the active user, searching the database customer table which contains all contacts
         public List<CustomerModel> getEveryone() {
             List<CustomerModel> returnList = new ArrayList<>();
 
@@ -293,6 +240,7 @@ import java.util.List;
             db.close();
             return returnList;
         }
+        // Gets all e-transfers with outgoing account matching the active user in database, grabs from e-transfers table
         public List<Etransfers> getEtransfers1() {
             List<Etransfers> returnList = new ArrayList<>();
             SQLiteDatabase db = this.getReadableDatabase();
@@ -312,6 +260,7 @@ import java.util.List;
             db.close();
             return returnList;
         }
+        // Gets all e-transfers with receiving account mathing the active user in database, grabs from the e-transfers table
         public List<Etransfers> getEtransfers2() {
             List<Etransfers> returnList = new ArrayList<>();
             SQLiteDatabase db = this.getReadableDatabase();
@@ -331,7 +280,7 @@ import java.util.List;
             db.close();
             return returnList;
         }
-
+        // Gets all bank accounts where the account email is equal to the active user in database, grabs from the accounts table
         public List<Accounts> getAccounts() {
             List<Accounts> returnList = new ArrayList<>();
             SQLiteDatabase db = this.getReadableDatabase();
@@ -353,6 +302,7 @@ import java.util.List;
             db.close();
             return returnList;
         }
+        // Gets all banking account from selected email of user in database, grabs from the accounts table
         public List<Accounts> getReceivingAccounts(String email) {
             List<Accounts> returnList = new ArrayList<>();
             SQLiteDatabase db = this.getReadableDatabase();
@@ -374,6 +324,7 @@ import java.util.List;
             db.close();
             return returnList;
         }
+        // Gets all banking accounts eligible as outgoing where account email equals active user in database, grabs from accounts table
         public List<Accounts> getOutgoingAccounts() {
             List<Accounts> returnList = new ArrayList<>();
             SQLiteDatabase db = this.getReadableDatabase();
@@ -396,6 +347,7 @@ import java.util.List;
             db.close();
             return returnList;
         }
+        // Grabs outgoing and receiving accounts
         public List<Accounts> getSelectedAccounts() {
             List<Accounts> returnList = new ArrayList<>();
             SQLiteDatabase db = this.getReadableDatabase();
@@ -406,7 +358,7 @@ import java.util.List;
             db.close();
             return returnList;
         }
-
+        // Checks if the email is recognized as admin
         public void isAdmin (String email) {
             ACTIVE_USER = email;
 
@@ -420,22 +372,16 @@ import java.util.List;
         public boolean Admin() {
             return ACTIVE_ADMIN;
         }
-
+        // Checks if email and password are valid in the database
         public boolean isValidEmailAndPassword(String email, String password) {
-            UserModel user = new UserModel();
-
             // get data from the database
             String queryString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
-
             SQLiteDatabase db = this.getReadableDatabase();
-
             Cursor cursor = db.rawQuery(queryString, new String[] {email});
 
             boolean hasObject = false;
             if (cursor.moveToNext()) {
-                // loop through the cursor (result set) and create new customer objects. Put them into the return list.
                 String pw = cursor.getString(3);
-                Log.d("idk", pw);
                 if (pw.equals(password)) {
                     hasObject = true;
                 }
@@ -449,6 +395,7 @@ import java.util.List;
             db.close();
             return hasObject;
         }
+        // Checks if email is recognized in the database under the user table user email column
         public boolean isValidEmail(String email) {
             String query = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
             SQLiteDatabase db = this.getReadableDatabase();
@@ -464,6 +411,7 @@ import java.util.List;
             cursor.close();
             return hasObject;
         }
+        // Checks if the active user has a saved one card account in the database
         public boolean findStudentAccount(){
             String query = "SELECT * FROM " + ACCOUNTS_TABLE + " WHERE " + ACCOUNT_EMAIL + " =?";
             SQLiteDatabase db = this.getReadableDatabase();
@@ -483,7 +431,7 @@ import java.util.List;
             db.close();
             return hasObject;
         }
-
+        // Gets all info on the user class where the email is equal to the active user, grabs info from database user table
         public ArrayList<String> grabInfo() {
 
             String userString = "SELECT * FROM " + USER_TABLE + " WHERE " + USER_EMAIL + " = ?";
@@ -514,7 +462,7 @@ import java.util.List;
             return list;
 
         }
-
+        // Updates name phone and password in the database user table where user email equals active user
         public boolean updateSettings(String name, String phone, String password) {
 
             SQLiteDatabase db = this.getWritableDatabase();
@@ -529,6 +477,7 @@ import java.util.List;
             return true;
 
         }
+        // Sends inputed amount from selected outgoing account to selected receiving account
         public boolean sendMoney(Accounts outgoing, Accounts receiving, float amount){
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues cv = new ContentValues();

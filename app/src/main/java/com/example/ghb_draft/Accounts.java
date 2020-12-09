@@ -1,7 +1,7 @@
 package com.example.ghb_draft;
 
 import java.text.DecimalFormat;
-
+// Bank Account Class
 public class Accounts {
     private String email, type;
     private Float balance;

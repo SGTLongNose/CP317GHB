@@ -45,16 +45,29 @@ public class Registration extends AppCompatActivity {
 
                 UserModel userModel;
                 try {
-
-                    if (dataBaseHelper.isEmail(email) == false) {
+                    // When the user is registering and the fields emailAddress, password, or rePassword are empty then the user will not be able to register and a toast messae
+                    // Will tell them to fill in the required fields
+                    if (emailAddress.getText().toString().equals("") || password.getText().toString().equals("") || rePassword.getText().toString().equals("")){
+                        emailAddress.setText("");
+                        password.setText("");
+                        rePassword.setText("");
+                        Toast.makeText(Registration.this, "Error, Please Fill In Required Fields", Toast.LENGTH_SHORT).show();
+                    }
+                    // This checks if the email already exists in the database or not, if it doesn't this else if runs
+                    else if (dataBaseHelper.isEmail(email) == false) {
+                        // This if statement checks if the re-enter password is equal to your password, if so this statement runs
                         if (password.getText().toString().equals(rePassword.getText().toString())) {
+                            // This gives the registering user an bank account, each user gets to start with a savings account that has 250$
                             Accounts starterAccount = new Accounts(emailAddress.getText().toString(), (float) 250, "Savings", null, -1);
+                            // Creates user account and adds it into the database
                             userModel = new UserModel(fullName.getText().toString(), phoneNumber.getText().toString(), emailAddress.getText().toString(), password.getText().toString());
                             Toast.makeText(Registration.this, userModel.toString(), Toast.LENGTH_SHORT).show();
                             dataBaseHelper.addUser(userModel);
                             dataBaseHelper.addAccount(starterAccount);
+                            // Takes the user back to the login page after the registration is complete
                             openLoginScreen();
 
+                        // If the password does not match the rePassword then this else will be called
                         } else {
                             password.setText("");
                             rePassword.setText("");
@@ -63,6 +76,7 @@ public class Registration extends AppCompatActivity {
 
                         }
 
+                    // If the email already exists in the system then this else statement will be called
                     } else {
                         emailAddress.setText("");
                         Toast.makeText(Registration.this, "Email exists in system already", Toast.LENGTH_SHORT).show();

@@ -30,10 +30,11 @@ public class AdminUserLogin extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(email.getText().toString());
+               //  This is when the admin is logging into a user's account
                 try {
+                   // Calls the database to see if the email that the admin put in is in the database
                     boolean x = dataBaseHelper.isValidEmail(email.getText().toString());
-                    System.out.println(x);
+                    // Sets the email that the admin entered to the activeUser so that the application displays the correct information
                     dataBaseHelper.setActiveUser(email.getText().toString());
                     if (!x) {
                         Toast.makeText(AdminUserLogin.this, "Email does not exist.", Toast.LENGTH_SHORT).show();

@@ -45,6 +45,7 @@ public class Settings extends AppCompatActivity {
         mobile = (EditText) findViewById(R.id.settings_mobile);
         accountPassword = (EditText) findViewById(R.id.settings_password);
 
+        // Grabs the information from the database of the user that is logged into the system
         ArrayList<String> x = dataBaseHelper.grabInfo();
 
         String fName = x.get(0);
@@ -52,6 +53,7 @@ public class Settings extends AppCompatActivity {
         String mail = x.get(2);
         String pw = x.get(3);
 
+        // This sets the hints to the proper information of the user
         firstName.setHint("" + fName);
         mobile.setHint("" + phone);
         accountPassword.setHint("" + pw);
@@ -80,6 +82,7 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                // if the user decides to only edit one text edit then the system will know to keep the other information the same instead of changing it to a blank space
                 if (firstName.getText().toString().isEmpty()) {
                     firstName.setText(firstName.getHint());
                 }
@@ -89,6 +92,7 @@ public class Settings extends AppCompatActivity {
                 if (accountPassword.getText().toString().isEmpty()) {
                     accountPassword.setText(accountPassword.getHint());
                 }
+               // If the user decides to change any of their information, then this calls the database and updates the database to the new information that the user entered
                 dataBaseHelper.updateSettings(firstName.getText().toString(), mobile.getText().toString(), accountPassword.getText().toString());
                 finish();
                 startActivity(getIntent());
@@ -101,6 +105,7 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                // Opens up a popup to make sure the user is okay with deleting their account
                 createDeleteDialog();
 
             }
@@ -119,6 +124,7 @@ public class Settings extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // This is the pop up that comes from when the user chooses to delete their account
     public void createDeleteDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
         final View deletePopupView = getLayoutInflater().inflate(R.layout.deletepopup, null);

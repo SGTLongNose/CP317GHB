@@ -1,5 +1,5 @@
 package com.example.ghb_draft;
-
+// User class outlining a created user profile
 public class UserModel {
     private String fullName, userEmail, userPassword, userPhone;
 

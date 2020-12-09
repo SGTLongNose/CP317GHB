@@ -62,9 +62,12 @@ public class ContactList extends AppCompatActivity {
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(ContactList.this);
                 CustomerModel customerModel;
                 try {
+                    // Checks to see if the user put anything in the text edits, the if statement means they are empty so it tells the user their was an error adding to the contact list
                     if (et_email.getText().toString().isEmpty() || et_name.getText().toString().isEmpty()) {
                         Toast.makeText(ContactList.this, "Error creating customer", Toast.LENGTH_SHORT).show();
+                    // If the user correctly puts in the information the else statement will run
                     } else {
+                        // Lets the system know that this is the active user, so that the contact information gets added to the correct account
                         String active = dataBaseHelper.getActiveUser();
                         customerModel = new CustomerModel(active, et_name.getText().toString(), et_email.getText().toString());
                         dataBaseHelper.addOne(customerModel);
@@ -85,6 +88,7 @@ public class ContactList extends AppCompatActivity {
         });
 
         lv_customerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            // If the user clicks on a saved contact in the listview they will be deleted from the saved contacts and the database
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CustomerModel clickedCustomer = (CustomerModel) parent.getItemAtPosition(position);

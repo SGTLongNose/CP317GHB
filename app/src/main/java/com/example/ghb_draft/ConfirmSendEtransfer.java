@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+// Final send e-transfer page
 public class ConfirmSendEtransfer extends AppCompatActivity {
     private ImageButton btn_home;
     private Button btn_transferRestart, btn_transferSend;
@@ -43,6 +43,7 @@ public class ConfirmSendEtransfer extends AppCompatActivity {
                 openSendEtransfer();
             }
         });
+        // Send button call required functions to send e-transfer
         btn_transferSend = (Button) findViewById(R.id.btn_transferSend);
         btn_transferSend.setOnClickListener(new View.OnClickListener() {
             @Override

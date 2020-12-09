@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
-
+// Send funds initial page where user selects which bank account to send funds from
 public class SendFunds extends AppCompatActivity {
     private ImageButton btn_home;
     private ListView lv_outgoingAccounts;

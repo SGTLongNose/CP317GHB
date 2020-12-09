@@ -1,9 +1,11 @@
 package com.example.ghb_draft;
 
+import java.text.DecimalFormat;
+
 public class Etransfers {
     private String outgoingEmail, receivingEmail;
     private Float amount;
-
+    private static DecimalFormat df = new DecimalFormat("0.00");
 
     public Etransfers(String outgoingEmail, String receivingEmail, Float amount){
         this.outgoingEmail = outgoingEmail;
@@ -16,7 +18,7 @@ public class Etransfers {
 
     @Override
     public String toString() {
-            return "$" + amount + ", Sent From: " + outgoingEmail + ", Received By: " + receivingEmail;
+            return "$" + df.format(amount)  + ", Sent From: " + outgoingEmail + ", Received By: " + receivingEmail;
     }
 
     public String getOutgoingEmail() {

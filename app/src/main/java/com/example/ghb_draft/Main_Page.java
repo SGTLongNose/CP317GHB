@@ -144,8 +144,6 @@ public class Main_Page extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "An admin will be with you shortly.", Toast.LENGTH_LONG).show();
         }
         if (id == R.id.menu2) {
-            //Toast.makeText(getApplicationContext(), "Hello menu 2", Toast.LENGTH_LONG).show();
-            //createNewContactDialog();
             openNewAccount();
         }
         if (id == R.id.it_log) {
@@ -159,33 +157,6 @@ public class Main_Page extends AppCompatActivity {
 
 
         return super.onOptionsItemSelected(item);
-
-    }
-
-    public void createNewContactDialog() {
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View contactPopupView = getLayoutInflater().inflate(R.layout.onecardpopup, null);
-        oneCard_ID = (EditText) contactPopupView.findViewById(R.id.oneCard_ID);
-
-        oneCard_add = (Button) contactPopupView.findViewById(R.id.oneCard_add);
-        oneCard_cancel = (Button) contactPopupView.findViewById(R.id.oneCard_cancel);
-
-        dialogBuilder.setView(contactPopupView);
-        dialog = dialogBuilder.create();
-        dialog.show();
-
-        oneCard_add.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
-                dataBaseHelper.addOneCard(Integer.parseInt(oneCard_ID.getText().toString()));
-
-                dialog.dismiss();
-            }
-        });
-        oneCard_cancel.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
-                dialog.dismiss();
-            }
-        });
 
     }
 }
